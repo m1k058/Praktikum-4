@@ -37,33 +37,116 @@ public class Region
      */
     private void raeumeAnlegen(int variation)
     {
+        // standart Test Variation
         if(variation == 0){
-            Raum bahnhof, marktplatz, regionkanzlei, autobahn, feld;
+            Raum bahnhof, marktplatz, bauamt, feld;
       
             // die Räume erzeugen
             bahnhof = new Raum("am Hauptbahnhof");
             marktplatz = new Raum("am Marktplatz");
-            regionkanzlei = new Raum("in der Regionkanzlei");
-            autobahn = new Raum("auf der Autobahn");
+            bauamt = new Raum("im Bauamt für Zukunftsenergie (BZEG)");
             feld = new Raum("auf einem Feld");
         
             // die Ausgänge initialisieren
-            marktplatz.setzeAusgang("north", regionkanzlei);
+            marktplatz.setzeAusgang("north", bauamt);
             marktplatz.setzeAusgang("east", bahnhof);
-            marktplatz.setzeAusgang("south", autobahn);
+            marktplatz.setzeAusgang("south", feld);
 
-            regionkanzlei.setzeAusgang("west", marktplatz);
+            bauamt.setzeAusgang("west", marktplatz);
 
             bahnhof.setzeAusgang("west", marktplatz);
-
-            autobahn.setzeAusgang("north", marktplatz);
-            autobahn.setzeAusgang("south", feld);
     
-            feld.setzeAusgang("north", autobahn);
+            feld.setzeAusgang("north", marktplatz);
         
             bahnhofCheck = bahnhof;     // zum vergleich         
             aktuellerRaum = bahnhof;  // das Spiel startet am Bahnhof
         }
+
+        else{
+            Raum bahnhof, marktplatz, bauamt, feld1, feld2;
+      
+            // die Räume erzeugen
+            bahnhof = new Raum("am Hauptbahnhof");
+            marktplatz = new Raum("am Marktplatz");
+            bauamt = new Raum("im Bauamt für Zukunftsenergie (BZEG)");
+            feld1 = new Raum("auf einem Feld");
+            feld2 = new Raum("auf einem Feld");
+        
+            // die Ausgänge initialisieren
+            marktplatz.setzeAusgang("east", bauamt);
+            marktplatz.setzeAusgang("west", bahnhof);
+            marktplatz.setzeAusgang("north", feld1);
+
+            bauamt.setzeAusgang("west", marktplatz);
+
+            bahnhof.setzeAusgang("east", marktplatz);
+            
+            feld1.setzeAusgang("north", feld2);
+            feld1.setzeAusgang("south", marktplatz);
+            feld2.setzeAusgang("south", feld1);
+            
+            if(variation == 1 || variation == 2)
+            {
+                Raum  strandMitte, strandOst, strandWest, strandWest2, feld3, feld4, offshore;
+                
+                strandMitte = new Raum("am Strand");
+                strandOst = new Raum("am Strand");
+                strandWest = new Raum("am Strand");
+                strandWest2 = new Raum("am Strand");
+                feld3 = new Raum("auf einem Feld");
+                feld4 = new Raum("auf einem Feld");
+                offshore = new Raum("am Rand der Offshore-Bauzone");
+                    
+                strandMitte.setzeAusgang("north", marktplatz);
+                strandMitte.setzeAusgang("west", strandWest);
+                strandMitte.setzeAusgang("east", strandOst);
+                strandOst.setzeAusgang("west", strandMitte);
+                strandWest.setzeAusgang("east", strandMitte);
+                strandWest.setzeAusgang("west", strandWest2);
+                strandWest2.setzeAusgang("east", strandWest);
+                
+                offshore.setzeAusgang("north", strandWest2);
+                
+                marktplatz.setzeAusgang("south", strandMitte);
+                
+                feld3.setzeAusgang("north", feld4);
+                feld4.setzeAusgang("south", feld3);                
+                feld1.setzeAusgang("west", feld3);
+                feld2.setzeAusgang("west", feld4);                
+                feld3.setzeAusgang("east", feld1);                
+                feld4.setzeAusgang("east", feld2); 
+                if(variation == 2){
+                    Raum autobahn, marktplatz1;
+                    
+                    autobahn = new Raum("auf der Autobahn richtung Windhavn");
+                    marktplatz1 = new Raum("am Marktplatz");
+                    
+                    marktplatz.setzeAusgang("west", marktplatz1);
+                    marktplatz1.setzeAusgang("north", autobahn);
+                    marktplatz1.setzeAusgang("east", marktplatz); 
+                    marktplatz1.setzeAusgang("south", strandWest); 
+                    marktplatz1.setzeAusgang("west", bahnhof); 
+                    
+                    autobahn.setzeAusgang("south", marktplatz1);                    
+                    bahnhof.setzeAusgang("east", marktplatz1);
+                    strandWest.setzeAusgang("south", offshore);
+                    strandWest.setzeAusgang("north", marktplatz1);
+                    offshore.setzeAusgang("north", strandWest);
+                    
+                    feld1.setzeAusgang("east", feld3);
+                    feld2.setzeAusgang("east", feld4);                
+                    feld3.setzeAusgang("west", feld1);                
+                    feld4.setzeAusgang("west", feld2);                
+                }
+                else{
+                    strandWest2.setzeAusgang("south", offshore);
+                }
+            }
+                      
+            bahnhofCheck = bahnhof;     // zum vergleich         
+            aktuellerRaum = bahnhof;  // das Spiel startet am Bahnhof
+        }
+        
     }
     
     /**
@@ -71,7 +154,7 @@ public class Region
      * wechsele in den neuen Raum, ansonsten gib eine Fehlermeldung
      * aus.
      */
-    public void wechsleRaum(Befehl befehl) 
+     public void wechsleRaum(Befehl befehl) 
     {
         if(!befehl.hatZweitesWort()) {
             // Gibt es kein zweites Wort, wissen wir nicht, wohin...

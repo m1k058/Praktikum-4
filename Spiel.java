@@ -37,7 +37,7 @@ class Spiel
      */
     private void regionAnlegen()
     {
-        Region Voltavia, Wattental, Windhain, Kraftia, SolariaWest, SolariaOst, Westseekueste, Südseekueste, Hauptstadt, Windhavn;
+        Region Voltavia, Wattental, Windhain, Kraftia, SolariaWest, SolariaOst, Westseekueste, Suedseekueste, Hauptstadt, Windhavn;
       
         // die Regionen erzeugen
         Voltavia = new Region(" in Voltavia", 0);
@@ -46,9 +46,9 @@ class Spiel
         Kraftia = new Region(" in Kraftia", 0);
         SolariaWest = new Region(" in Solaria-West", 0);
         SolariaOst = new Region(" in Solaria-Ost", 0);
-        Westseekueste = new Region(" in Westseeküste", 0);
-        Südseekueste = new Region(" in Südseeküste", 0);
-        Hauptstadt = new Region(" in Hauptstadt", 0);
+        Westseekueste = new Region(" an der Westseeküste", 1);
+        Suedseekueste = new Region(" an der Südseeküste", 2);
+        Hauptstadt = new Region(" in der Hauptstadt", 0);
         Windhavn = new Region(" in Windhavn", 0);
         
         // die Ausgänge initialisieren
@@ -71,16 +71,16 @@ class Spiel
         SolariaWest.setzeAusgang("north", Windhain);
         
         SolariaOst.setzeAusgang("west", SolariaWest);
-        SolariaOst.setzeAusgang("south", Südseekueste);
+        SolariaOst.setzeAusgang("south", Suedseekueste);
         SolariaOst.setzeAusgang("north", Kraftia);
         
-        Westseekueste.setzeAusgang("east", Südseekueste);
+        Westseekueste.setzeAusgang("east", Suedseekueste);
         Westseekueste.setzeAusgang("north", SolariaWest);
         
-        Südseekueste.setzeAusgang("west", Westseekueste);
-        Südseekueste.setzeAusgang("north", SolariaOst);
+        Suedseekueste.setzeAusgang("west", Westseekueste);
+        Suedseekueste.setzeAusgang("north", SolariaOst);
         
-        aktuelleRegion = Südseekueste;  // das Spiel startet in Südseekueste
+        aktuelleRegion = Suedseekueste;  // das Spiel startet in Suedseekueste
     }
 
     /**
