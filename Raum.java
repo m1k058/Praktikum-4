@@ -17,6 +17,8 @@ import java.util.Iterator;
 class Raum 
 {
     private String beschreibung;
+    private boolean bebaubar;
+    private boolean bebaut;
     private HashMap<String, Raum> ausgaenge;        // die Ausgänge dieses Raums
 
     /**
@@ -25,9 +27,11 @@ class Raum
      * @param beschreibung enthält eine Beschreibung in der Form
      *        "in einer Küche" oder "auf einem Sportplatz".
      */
-    public Raum(String beschreibung) 
+    public Raum(String beschreibung, boolean bebaubar, boolean bebaut) 
     {
         this.beschreibung = beschreibung;
+        this.bebaubar = bebaubar;
+        this.bebaut = bebaut;
         ausgaenge = new HashMap<String, Raum>();
     }
 
@@ -50,6 +54,32 @@ class Raum
         return beschreibung;
     }
 
+    /**
+     * @return die Information dieses Raums, ob er bebaut ist oder nicht (wurde im Konstruktor
+     * ï¿½bergeben).
+     */
+    public boolean gibBebaut()
+    {
+        return bebaut;
+    }
+    
+    /**
+     * @return die Information dieses Raums, ob er bebaubar ist oder nicht (wurde im Konstruktor
+     * ï¿½bergeben).
+     */
+    public boolean gibBebaubar()
+    {
+        return bebaubar;
+    }
+    
+    /**
+     * Ändere den Zustand des Feldes.
+     */
+    public void setzeBebaut(boolean bebaut)
+    {
+        this.bebaut = bebaut;
+    }
+    
     /**
      * Liefere eine Zeichenkette, die die Ausgänge dieses Raums
      * beschreibt, beispielsweise
