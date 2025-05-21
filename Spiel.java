@@ -21,14 +21,15 @@ class Spiel
 {
     private Parser parser;
     private Region aktuelleRegion;
-    
-        
+    private Spieler spieler;
+
     /**
      * Erzeuge ein Spiel und initialisiere die interne Raumkarte.
      */
     public Spiel() 
     {
         regionAnlegen();
+        spieler = new Spieler(5, 0, 100);
         parser = new Parser();
     }
 
@@ -38,7 +39,7 @@ class Spiel
     private void regionAnlegen()
     {
         Region Voltavia, Wattental, Windhain, Kraftia, SolariaWest, SolariaOst, Westseekueste, Südseekueste, Hauptstadt, Windhavn;
-      
+        
         // die Regionen erzeugen
         Voltavia = new Region(" in Voltavia");
         Wattental = new Region(" in Wattental");
@@ -50,36 +51,36 @@ class Spiel
         Südseekueste = new Region(" in Südseeküste");
         Hauptstadt = new Region(" in Hauptstadt");
         Windhavn = new Region(" in Windhavn");
-        
+
         // die Ausgänge initialisieren
-        Voltavia.setzeAusgang("east", Wattental);
-        Voltavia.setzeAusgang("south", Windhain);
-        
-        Wattental.setzeAusgang("west", Kraftia);
-        Wattental.setzeAusgang("south", Voltavia);
-        
-        Windhain.setzeAusgang("east", Kraftia);
-        Windhain.setzeAusgang("south", SolariaWest);
-        Windhain.setzeAusgang("north", Voltavia);
-        
-        Kraftia.setzeAusgang("west", Windhain);
-        Kraftia.setzeAusgang("south",SolariaOst );
-        Kraftia.setzeAusgang("north", Wattental);
-        
-        SolariaWest.setzeAusgang("east", SolariaOst);
-        SolariaWest.setzeAusgang("south", Westseekueste);
-        SolariaWest.setzeAusgang("north", Windhain);
-        
-        SolariaOst.setzeAusgang("west", SolariaWest);
-        SolariaOst.setzeAusgang("south", Südseekueste);
-        SolariaOst.setzeAusgang("north", Kraftia);
-        
-        Westseekueste.setzeAusgang("east", Südseekueste);
-        Westseekueste.setzeAusgang("north", SolariaWest);
-        
-        Südseekueste.setzeAusgang("west", Westseekueste);
-        Südseekueste.setzeAusgang("north", SolariaOst);
-        
+        Voltavia.setzeAusgang("rechts", Wattental);
+        Voltavia.setzeAusgang("unten", Windhain);
+
+        Wattental.setzeAusgang("links", Kraftia);
+        Wattental.setzeAusgang("unten", Voltavia);
+
+        Windhain.setzeAusgang("rechts", Kraftia);
+        Windhain.setzeAusgang("unten", SolariaWest);
+        Windhain.setzeAusgang("oben", Voltavia);
+
+        Kraftia.setzeAusgang("links", Windhain);
+        Kraftia.setzeAusgang("unten",SolariaOst );
+        Kraftia.setzeAusgang("oben", Wattental);
+
+        SolariaWest.setzeAusgang("rechts", SolariaOst);
+        SolariaWest.setzeAusgang("unten", Westseekueste);
+        SolariaWest.setzeAusgang("oben", Windhain);
+
+        SolariaOst.setzeAusgang("links", SolariaWest);
+        SolariaOst.setzeAusgang("unten", Südseekueste);
+        SolariaOst.setzeAusgang("oben", Kraftia);
+
+        Westseekueste.setzeAusgang("rechts", Südseekueste);
+        Westseekueste.setzeAusgang("oben", SolariaWest);
+
+        Südseekueste.setzeAusgang("links", Westseekueste);
+        Südseekueste.setzeAusgang("oben", SolariaOst);
+
         aktuelleRegion = Südseekueste;  // das Spiel startet in Südseekueste
     }
 
@@ -93,7 +94,7 @@ class Spiel
 
         // Die Hauptschleife. Hier lesen wir wiederholt Befehle ein
         // und führen sie aus, bis das Spiel beendet wird.
-                
+
         boolean beendet = false;
         while (! beendet) {
             Befehl befehl = parser.liefereBefehl();
@@ -112,6 +113,7 @@ class Spiel
         System.out.println("Das Neuland ist ein weit unterentwickeltes Land und benötigt dringend deine Hilfe!");
         System.out.println("Nur du kannst das Land noch retten!!!");
         System.out.println("Tippen sie '" + Befehlswort.HELP + "', wenn Sie Hilfe brauchen.");
+        spieler.ausgeben();
         System.out.println();
         System.out.println(aktuelleRegion.gibLangeBeschreibung());
     }
@@ -126,26 +128,32 @@ class Spiel
         boolean moechteBeenden = false;
 
         Befehlswort befehlswort = befehl.gibBefehlswort();
-        
+
         switch(befehlswort) { 
             case UNKNOWN:
                 System.out.println("Ich weiss nicht, was Sie meinen...");
                 break;
-                
+
             case HELP:
                 hilfstextAusgeben();
                 break;
-                
+
             case GO:
-                aktuelleRegion.wechsleRaum(befehl);
+                if (aktuelleRegion.wechsleRaum(befehl)) {
+                    spieler.ausgeben();
+                }
                 break;
-                
+
             case TRAIN:
-                 wechsleRegion(befehl);
+                wechsleRegion(befehl);
                 break;
-                
+
             case QUIT:
                 moechteBeenden = beenden(befehl);
+                break;
+
+            case BUILD:
+                baueAnlage(befehl);
                 break;
         }
         // ansonsten: Befehl nicht erkannt.
@@ -190,10 +198,56 @@ class Spiel
             else {
                 aktuelleRegion = naechsteRegion;
                 System.out.println(aktuelleRegion.gibLangeBeschreibung());
+                spieler.aendereGeld(spieler.gibEinkommen());
+                spieler.ausgeben();
             }
         }
         else {
             System.out.println("Hier fahren keine Züge!");
+        }
+    }
+
+    private void baueAnlage(Befehl befehl) {
+        if(aktuelleRegion.amFeld()){
+            Raum aktuellerRaum = aktuelleRegion.gibAktuellerRaum();
+            if(!aktuellerRaum.gibBebaut()) {
+                if(!befehl.hatZweitesWort()) {
+                    // Gibt es kein zweites Wort, wissen wir nicht, was gebaut werden soll...
+                    System.out.println("Welche Art von Anlage soll gebaut werden?");
+                    return;
+                }
+
+                String anlagenArt = befehl.gibZweitesWort();
+
+                if (anlagenArt.equals("wind")) {
+                    System.out.println("Es wurde eine Windkraftanlage" + aktuelleRegion.gibBeschreibung() + 
+                    " gebaut (-1 Münze).");
+                    System.out.println("Du erhältst nun immer 1 Münze, wenn du mit einem Zug fährst.");
+                    aktuellerRaum.setzeBebaut(true);
+                    spieler.aendereGeld(-1);
+                    spieler.aendereEinkommen(1);
+                    spieler.aendereAnsehen(1);
+                } else if (anlagenArt.equals("solar")) {
+                    System.out.println("Es wurde eine Solaranlage" + aktuelleRegion.gibBeschreibung() + 
+                    " gebaut (-2 Münzen).");
+                    System.out.println("Du erhältst nun immer 2 Münzen, wenn du mit einem Zug fährst.");
+                    aktuellerRaum.setzeBebaut(true);
+                    spieler.aendereGeld(-2);
+                    spieler.aendereEinkommen(2);
+                    spieler.aendereAnsehen(2);
+                }
+                else {
+                    System.out.println("Es können Windkraftanlagen (Befehl 'wind') " +
+                    "oder Solaranlagen (Befehl 'solar') gebaut werden");
+                }
+
+            }
+            else {
+                System.out.println("Hier wurde schon eine Anlage gebaut!");
+            }
+        }
+        else {
+            System.out.println("Eine Anlage kann nur auf einem freien Feld gebaut werden!");
         }
     }
 

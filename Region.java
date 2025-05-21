@@ -14,6 +14,7 @@ public class Region
     private HashMap<String, Region> ausgaenge;        // die Ausgänge dieser Region
     private Raum aktuellerRaum;
     private Raum bahnhofCheck;
+    private Raum feldCheck;
 
     /**
      * Erzeuge eine Region mit einer Beschreibung. Eine Region
@@ -36,28 +37,29 @@ public class Region
         Raum bahnhof, marktplatz, regionkanzlei, autobahn, feld;
       
         // die Räume erzeugen
-        bahnhof = new Raum("am Hauptbahnhof");
-        marktplatz = new Raum("am Marktplatz");
-        regionkanzlei = new Raum("in der Regionkanzlei");
-        autobahn = new Raum("auf der Autobahn");
-        feld = new Raum("auf einem Feld");
+        bahnhof = new Raum("am Hauptbahnhof", false, false);
+        marktplatz = new Raum("am Marktplatz", false, false);
+        regionkanzlei = new Raum("in der Regionkanzlei", false, false);
+        autobahn = new Raum("auf der Autobahn", false, false);
+        feld = new Raum("auf einem Feld", true, false);
         
         // die Ausgänge initialisieren
-        marktplatz.setzeAusgang("north", regionkanzlei);
-        marktplatz.setzeAusgang("east", bahnhof);
-        marktplatz.setzeAusgang("south", autobahn);
+        marktplatz.setzeAusgang("oben", regionkanzlei);
+        marktplatz.setzeAusgang("rechts", bahnhof);
+        marktplatz.setzeAusgang("unten", autobahn);
 
-        regionkanzlei.setzeAusgang("west", marktplatz);
+        regionkanzlei.setzeAusgang("unten", marktplatz);
 
-        bahnhof.setzeAusgang("west", marktplatz);
+        bahnhof.setzeAusgang("links", marktplatz);
 
-        autobahn.setzeAusgang("north", marktplatz);
-        autobahn.setzeAusgang("south", feld);
+        autobahn.setzeAusgang("oben", marktplatz);
+        autobahn.setzeAusgang("unten", feld);
 
-        feld.setzeAusgang("north", autobahn);
+        feld.setzeAusgang("oben", autobahn);
         
-        bahnhofCheck = bahnhof;     // zum vergleich         
-        aktuellerRaum = bahnhof;  // das Spiel startet am Bahnhof
+        bahnhofCheck = bahnhof;     // zum vergleich       
+        feldCheck = feld;           // zum vergleich   
+        aktuellerRaum = bahnhof;    // das Spiel startet am Bahnhof
     }
     
     /**
@@ -65,12 +67,12 @@ public class Region
      * wechsele in den neuen Raum, ansonsten gib eine Fehlermeldung
      * aus.
      */
-    public void wechsleRaum(Befehl befehl) 
+    public boolean wechsleRaum(Befehl befehl) 
     {
         if(!befehl.hatZweitesWort()) {
             // Gibt es kein zweites Wort, wissen wir nicht, wohin...
             System.out.println("Wohin möchten Sie gehen?");
-            return;
+            return false;
         }
 
         String richtung = befehl.gibZweitesWort();
@@ -80,10 +82,12 @@ public class Region
 
         if (naechsterRaum == null) {
             System.out.println("Dort ist keine Tür!");
+            return false;
         }
         else {
             aktuellerRaum = naechsterRaum;
             System.out.println(gibLangeBeschreibung());
+            return true;
         }
     }
     
@@ -104,6 +108,15 @@ public class Region
     public String gibBeschreibung()
     {
         return beschreibung;
+    }
+    
+    /**
+     * @return die kurze Beschreibung dieser Region (die dem Konstruktor
+     * übergeben wurde).
+     */
+    public Raum gibAktuellerRaum()
+    {
+        return aktuellerRaum;
     }
 
     /**
@@ -163,6 +176,16 @@ public class Region
     public boolean amBahnhof()
     {
         if (aktuellerRaum == bahnhofCheck){
+            return true;
+        }
+        else{
+        return false;
+        }
+    }
+    
+    public boolean amFeld()
+    {
+        if (aktuellerRaum == feldCheck){
             return true;
         }
         else{
