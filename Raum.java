@@ -3,15 +3,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
- * Diese Klasse modelliert Räume in der Welt von Zuul.
+ * Diese Klasse modelliert Räume im Neualand.
  * 
  * Ein "Raum" repräsentiert einen Ort in der virtuellen Landschaft des
  * Spiels. Ein Raum ist mit anderen Räumen über Ausgänge verbunden.
  * Für jeden existierenden Ausgang hält ein Raum eine Referenz auf 
  * den benachbarten Raum.
  * 
- * @author  Michael Kölling und David J. Barnes
- * @version 31.07.2011
+ * @author  Michael Kölling, David J. Barnes, Michal Kos und Cedric Wilke
+ * @version 21.05.2025
  */
 
 class Raum 
@@ -45,20 +45,9 @@ class Raum
      * @return die kurze Beschreibung dieses Raums (die dem Konstruktor
      * übergeben wurde).
      */
-    public String gibKurzbeschreibung()
+    public String gibBeschreibungRaum()
     {
         return beschreibung;
-    }
-
-    /**
-     * Liefere eine lange Beschreibung dieses Raums, in der Form:
-     *     Sie sind in der Küche.
-     *     Ausgänge: nord west
-     * @return eine lange Beschreibung dieses Raumes.
-     */
-    public String gibLangeBeschreibung()
-    {
-        return "Sie sind " + beschreibung + ".\n" + gibAusgaengeAlsString();
     }
 
     /**
@@ -67,9 +56,9 @@ class Raum
      * "Ausgänge: north west".
      * @return eine Beschreibung der Ausgänge dieses Raumes.
      */
-    private String gibAusgaengeAlsString()
+    public String gibAusgaengeAlsString()
     {
-        String ergebnis = "Ausgänge:";
+        String ergebnis = "";
         Set<String> keys = ausgaenge.keySet();
         for(String ausgang : keys)
             ergebnis += " " + ausgang;

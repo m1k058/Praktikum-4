@@ -37,28 +37,50 @@ class Spiel
      */
     private void regionAnlegen()
     {
-        Region region1, region2, region3, region4;
+        Region Voltavia, Wattental, Windhain, Kraftia, SolariaWest, SolariaOst, Westseekueste, Südseekueste, Hauptstadt, Windhavn;
       
         // die Regionen erzeugen
-        region1 = new Region("in Region1");
-        region2 = new Region("in Region2");
-        region3 = new Region("in Region3");
-        region4 = new Region("in Region4");
+        Voltavia = new Region(" in Voltavia");
+        Wattental = new Region(" in Wattental");
+        Windhain = new Region(" in Windhain");
+        Kraftia = new Region(" in Kraftia");
+        SolariaWest = new Region(" in Solaria-West");
+        SolariaOst = new Region(" in Solaria-Ost");
+        Westseekueste = new Region(" in Westseeküste");
+        Südseekueste = new Region(" in Südseeküste");
+        Hauptstadt = new Region(" in Hauptstadt");
+        Windhavn = new Region(" in Windhavn");
         
         // die Ausgänge initialisieren
-        region1.setzeAusgang("east", region2);
-        region1.setzeAusgang("south", region3);
+        Voltavia.setzeAusgang("east", Wattental);
+        Voltavia.setzeAusgang("south", Windhain);
         
-        region2.setzeAusgang("west", region1);
-        region2.setzeAusgang("south", region4);
+        Wattental.setzeAusgang("west", Kraftia);
+        Wattental.setzeAusgang("south", Voltavia);
         
-        region3.setzeAusgang("east", region4);
-        region3.setzeAusgang("north", region1);
+        Windhain.setzeAusgang("east", Kraftia);
+        Windhain.setzeAusgang("south", SolariaWest);
+        Windhain.setzeAusgang("north", Voltavia);
         
-        region4.setzeAusgang("west", region3);
-        region4.setzeAusgang("north", region2);
+        Kraftia.setzeAusgang("west", Windhain);
+        Kraftia.setzeAusgang("south",SolariaOst );
+        Kraftia.setzeAusgang("north", Wattental);
         
-        aktuelleRegion = region1;  // das Spiel startet in region1
+        SolariaWest.setzeAusgang("east", SolariaOst);
+        SolariaWest.setzeAusgang("south", Westseekueste);
+        SolariaWest.setzeAusgang("north", Windhain);
+        
+        SolariaOst.setzeAusgang("west", SolariaWest);
+        SolariaOst.setzeAusgang("south", Südseekueste);
+        SolariaOst.setzeAusgang("north", Kraftia);
+        
+        Westseekueste.setzeAusgang("east", Südseekueste);
+        Westseekueste.setzeAusgang("north", SolariaWest);
+        
+        Südseekueste.setzeAusgang("west", Westseekueste);
+        Südseekueste.setzeAusgang("north", SolariaOst);
+        
+        aktuelleRegion = Südseekueste;  // das Spiel startet in Südseekueste
     }
 
     /**
@@ -87,8 +109,8 @@ class Spiel
     {
         System.out.println();
         System.out.println("Willkommen im Neuland Alpha!");
-        System.out.println("Das Neuland ist ein sehr gut und weit unterentwickeltes");
-        System.out.println("Land aber es braucht deine Hilfe um wieder auf die Beine zu kommen!");
+        System.out.println("Das Neuland ist ein weit unterentwickeltes Land und benötigt dringend deine Hilfe!");
+        System.out.println("Nur du kannst das Land noch retten!!!");
         System.out.println("Tippen sie '" + Befehlswort.HELP + "', wenn Sie Hilfe brauchen.");
         System.out.println();
         System.out.println(aktuelleRegion.gibLangeBeschreibung());
@@ -118,6 +140,10 @@ class Spiel
                 aktuelleRegion.wechsleRaum(befehl);
                 break;
                 
+            case TRAIN:
+                 wechsleRegion(befehl);
+                break;
+                
             case QUIT:
                 moechteBeenden = beenden(befehl);
                 break;
@@ -126,8 +152,6 @@ class Spiel
         return moechteBeenden;
     }
 
-    // Implementierung der Benutzerbefehle:
-
     /**
      * Gib Hilfsinformationen aus.
      * Hier geben wir eine etwas alberne und unklare Beschreibung
@@ -135,19 +159,43 @@ class Spiel
      */
     private void hilfstextAusgeben() 
     {
-        System.out.println("Sie haben sich verlaufen. Sie sind allein.");
-        System.out.println("Sie irren auf dem Unigelände herum.");
+        System.out.println("Sie sind die letzte Hoffnung für das Land!!!");        
         System.out.println();
         System.out.println("Ihnen stehen folgende Befehle zur Verfügung:");
         parser.zeigeBefehle();
     }
 
     /**
-     * Versuche, in eine Richtung zu gehen. Wenn es einen Ausgang gibt,
-     * wechsele in den neuen Raum, ansonsten gib eine Fehlermeldung
-     * aus.
+     * Versuche, in eine Richtung zu gehen. Wenn es einen Ausgang gibt 
+     * und der Spieler am Bahnhof ist, wechsele in die neue Region,
+     * ansonsten gib eine Fehlermeldung aus.
      */
-    
+    private void wechsleRegion(Befehl befehl) 
+    {
+        if(aktuelleRegion.amBahnhof()){
+            if(!befehl.hatZweitesWort()) {
+                // Gibt es kein zweites Wort, wissen wir nicht, wohin...
+                System.out.println("Wohin möchten sie mit dem Zug fahren?");
+                return;
+            }
+
+            String richtung = befehl.gibZweitesWort();
+
+            // Wir versuchen, die Region zu verlassen.
+            Region naechsteRegion = aktuelleRegion.gibAusgang(richtung);
+
+            if (naechsteRegion == null) {
+                System.out.println("Dort hin gibt es aktuell keine Verbindung.");
+            }
+            else {
+                aktuelleRegion = naechsteRegion;
+                System.out.println(aktuelleRegion.gibLangeBeschreibung());
+            }
+        }
+        else {
+            System.out.println("Hier fahren keine Züge!");
+        }
+    }
 
     /**
      * "quit" wurde eingegeben. Überprüfe den Rest des Befehls,

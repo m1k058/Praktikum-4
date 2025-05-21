@@ -13,6 +13,7 @@ public class Region
     private String beschreibung;
     private HashMap<String, Region> ausgaenge;        // die Ausgänge dieser Region
     private Raum aktuellerRaum;
+    private Raum bahnhofCheck;
 
     /**
      * Erzeuge eine Region mit einer Beschreibung. Eine Region
@@ -35,29 +36,35 @@ public class Region
         Raum bahnhof, marktplatz, regionkanzlei, autobahn, feld;
       
         // die Räume erzeugen
-        bahnhof = new Raum("am Hauptbahnhof " + beschreibung);
+        bahnhof = new Raum("am Hauptbahnhof");
         marktplatz = new Raum("am Marktplatz");
-        regionkanzlei = new Raum("in Regionkanzlei");
+        regionkanzlei = new Raum("in der Regionkanzlei");
         autobahn = new Raum("auf der Autobahn");
         feld = new Raum("auf einem Feld");
         
         // die Ausgänge initialisieren
         marktplatz.setzeAusgang("north", regionkanzlei);
         marktplatz.setzeAusgang("east", bahnhof);
-        marktplatz.setzeAusgang("west", autobahn);
+        marktplatz.setzeAusgang("south", autobahn);
 
         regionkanzlei.setzeAusgang("west", marktplatz);
 
         bahnhof.setzeAusgang("west", marktplatz);
 
         autobahn.setzeAusgang("north", marktplatz);
-        autobahn.setzeAusgang("west", feld);
+        autobahn.setzeAusgang("south", feld);
 
         feld.setzeAusgang("north", autobahn);
-
+        
+        bahnhofCheck = bahnhof;     // zum vergleich         
         aktuellerRaum = bahnhof;  // das Spiel startet am Bahnhof
     }
-
+    
+    /**
+     * Versuche, in eine Richtung zu gehen. Wenn es einen Ausgang gibt,
+     * wechsele in den neuen Raum, ansonsten gib eine Fehlermeldung
+     * aus.
+     */
     public void wechsleRaum(Befehl befehl) 
     {
         if(!befehl.hatZweitesWort()) {
@@ -76,7 +83,7 @@ public class Region
         }
         else {
             aktuellerRaum = naechsterRaum;
-            System.out.println(aktuellerRaum.gibLangeBeschreibung());
+            System.out.println(gibLangeBeschreibung());
         }
     }
     
@@ -94,20 +101,20 @@ public class Region
      * @return die kurze Beschreibung dieser Region (die dem Konstruktor
      * übergeben wurde).
      */
-    public String gibKurzbeschreibung()
+    public String gibBeschreibung()
     {
         return beschreibung;
     }
 
     /**
      * Liefere eine lange Beschreibung diese Region, in der Form:
-     *     Sie sind in der Küche.
+     *     Sie sind in der Küche der Region Hamburg.
      *     Ausgänge: nord west
      * @return eine lange Beschreibung dieser Region.
      */
     public String gibLangeBeschreibung()
     {
-        return "Sie sind " + beschreibung + ".\n" + gibAusgaengeAlsString();
+        return "Sie sind " + aktuellerRaum.gibBeschreibungRaum() + gibBeschreibung() + ".\n" + gibAusgaengeAlsStringRaum();
     }
 
     /**
@@ -116,9 +123,25 @@ public class Region
      * "Ausgänge: north west".
      * @return eine Beschreibung der Ausgänge dieser Region.
      */
+    private String gibAusgaengeAlsStringRaum()
+    {
+        String ergebnis = "Ausgänge:" + aktuellerRaum.gibAusgaengeAlsString();
+        if(amBahnhof())
+        {
+        ergebnis += gibAusgaengeAlsString();
+        }
+        return ergebnis;
+    }
+    
+    /**
+     * Liefere eine Zeichenkette, die die Ausgänge dieser Region
+     * beschreibt, beispielsweise
+     * "Ausgänge: north west".
+     * @return eine Beschreibung der Ausgänge dieser Region.
+     */
     private String gibAusgaengeAlsString()
     {
-        String ergebnis = "Ausgänge:";
+        String ergebnis = "\nOder fahren sie mit dem Zug nach:";
         Set<String> keys = ausgaenge.keySet();
         for(String ausgang : keys)
             ergebnis += " " + ausgang;
@@ -135,5 +158,15 @@ public class Region
     public Region gibAusgang(String richtung) 
     {
         return ausgaenge.get(richtung);
+    }
+    
+    public boolean amBahnhof()
+    {
+        if (aktuellerRaum == bahnhofCheck){
+            return true;
+        }
+        else{
+        return false;
+        }
     }
 }
