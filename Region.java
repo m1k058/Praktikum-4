@@ -1,8 +1,9 @@
 import java.util.HashMap;
 import java.util.Set;
+import java.util.HashSet;
 
 /**
- * Das ist eine Region. Sie besteht aus mehreren Räumen. Es gibt immer einen Raum in der Region von
+ * Das ist eine Region. Sie besteht aus mehreren Raeumen. Es gibt immer einen Raum in der Region von
  * dem man in eine andere Region reisen kann.
  *
  * @author Michal Kos
@@ -11,19 +12,20 @@ import java.util.Set;
 public class Region
 {
     private String beschreibung;
-    private HashMap<String, Region> ausgaenge;        // die Ausgänge dieser Region
+    private HashMap<String, Region> ausgaenge;        // die Ausgaenge dieser Region
     private Raum aktuellerRaum;
     private Raum bahnhofCheck;
     private Raum feldCheck;
+    Set<Raum> feldRaeume = new HashSet<>();
 
     /**
      * Erzeuge eine Region mit einer Beschreibung. Eine Region
-     * hat anfangs keine Ausgänge. 
-     * Die Räume werden angelegt. Es sind verschiedene Variationen
+     * hat anfangs keine Ausgaenge. 
+     * Die Raeume werden angelegt. Es sind verschiedene Variationen
      * möglich. 
-     * @param beschreibung enthält eine Beschreibung in der Form
-     *        "in einer Küche" oder "auf einem Sportplatz".
-     *        Als zweites wird die Variation der Räume gewählt.
+     * @param beschreibung enthaelt eine Beschreibung in der Form
+     *        "in einer Kueche" oder "auf einem Sportplatz".
+     *        Als zweites wird die Variation der Raeume gewaehlt.
      */
     public Region(String beschreibung, int variation) 
     {
@@ -33,8 +35,8 @@ public class Region
     }
     
     /**
-     * Erzeuge alle Räume und verbinde ihre Ausgänge miteinander.
-     * Es sind verschiede variationen verfügbar.
+     * Erzeuge alle Raeume und verbinde ihre Ausgaenge miteinander.
+     * Es sind verschiede variationen verfuegbar.
      */
     private void raeumeAnlegen(int variation)
     {
@@ -43,22 +45,22 @@ public class Region
             Raum bahnhof, marktplatz, bauamt, feld;
       
 
-            // die Räume erzeugen
+            // die Raeume erzeugen
             bahnhof = new Raum("am Hauptbahnhof", false, false);
             marktplatz = new Raum("am Marktplatz", false, false);
-            bauamt = new Raum("im Bauamt für Zukunftsenergie (BZEG)", false, false);
+            bauamt = new Raum("im Bauamt fuer Zukunftsenergie (BZEG)", false, false);
             feld = new Raum("auf einem Feld", true, false);
         
-            // die Ausgänge initialisieren
-            marktplatz.setzeAusgang("north", bauamt);, false, false
-            marktplatz.setzeAusgang("east", bahnhof);
-            marktplatz.setzeAusgang("south", feld);
+            // die Ausgaenge initialisieren
+            marktplatz.setzeAusgang("oben", bauamt);
+            marktplatz.setzeAusgang("rechts", bahnhof);
+            marktplatz.setzeAusgang("unten", feld);
 
-            bauamt.setzeAusgang("west", marktplatz);
+            bauamt.setzeAusgang("links", marktplatz);
 
-            bahnhof.setzeAusgang("west", marktplatz);
+            bahnhof.setzeAusgang("links", marktplatz);
     
-            feld.setzeAusgang("north", marktplatz);
+            feld.setzeAusgang("oben", marktplatz);
         
             bahnhofCheck = bahnhof;     // zum vergleich         
             aktuellerRaum = bahnhof;  // das Spiel startet am Bahnhof
@@ -67,86 +69,92 @@ public class Region
         else{
             Raum bahnhof, marktplatz, bauamt, feld1, feld2;
       
-            // die Räume erzeugen
+            // die Raeume erzeugen
             bahnhof = new Raum("am Hauptbahnhof", false, false);
             marktplatz = new Raum("am Marktplatz", false, false);
-            bauamt = new Raum("im Bauamt für Zukunftsenergie (BZEG)", false, false);
-            feld1 = new Raum("auf einem Feld");
-            feld2 = new Raum("auf einem Feld");
+            bauamt = new Raum("im Bauamt f�r Zukunftsenergie (BZEG)", false, false);
+            feld1 = new Raum("auf einem Feld",true, false);
+            feld2 = new Raum("auf einem Feld",true, false);
         
-            // die Ausgänge initialisieren
-            marktplatz.setzeAusgang("east", bauamt);
-            marktplatz.setzeAusgang("west", bahnhof);
-            marktplatz.setzeAusgang("north", feld1);
+            // die Ausgaenge initialisieren
+            marktplatz.setzeAusgang("rechts", bauamt);
+            marktplatz.setzeAusgang("links", bahnhof);
+            marktplatz.setzeAusgang("oben", feld1);
 
-            bauamt.setzeAusgang("west", marktplatz);
+            bauamt.setzeAusgang("links", marktplatz);
 
-            bahnhof.setzeAusgang("east", marktplatz);
+            bahnhof.setzeAusgang("rechts", marktplatz);
             
-            feld1.setzeAusgang("north", feld2);
-            feld1.setzeAusgang("south", marktplatz);
-            feld2.setzeAusgang("south", feld1);
+            feld1.setzeAusgang("oben", feld2);
+            feld1.setzeAusgang("unten", marktplatz);
+            feld2.setzeAusgang("unten", feld1);
             
+            // Raeme in Set schreiben zum vergleich
+            feldRaeume.add(feld1); 
+            feldRaeume.add(feld2);
             if(variation == 1 || variation == 2)
             {
-                Raum  strandMitte, strandOst, strandWest, strandWest2, feld3, feld4, offshore;
+                Raum  strandMitte, strandOst, strandlinks, strandlinks2, feld3, feld4, offshore;
                 
                 strandMitte = new Raum("am Strand", false, false);
                 strandOst = new Raum("am Strand", false, false);
-                strandWest = new Raum("am Strand", false, false);
-                strandWest2 = new Raum("am Strand", false, false);
+                strandlinks = new Raum("am Strand", false, false);
+                strandlinks2 = new Raum("am Strand", false, false);
                 feld3 = new Raum("auf einem Feld", true, false);
                 feld4 = new Raum("auf einem Feld", true, false);
                 offshore = new Raum("am Rand der Offshore-Bauzone", true, false);
                     
-                strandMitte.setzeAusgang("north", marktplatz);
-                strandMitte.setzeAusgang("west", strandWest);
-                strandMitte.setzeAusgang("east", strandOst);
-                strandOst.setzeAusgang("west", strandMitte);
-                strandWest.setzeAusgang("east", strandMitte);
-                strandWest.setzeAusgang("west", strandWest2);
-                strandWest2.setzeAusgang("east", strandWest);
+                strandMitte.setzeAusgang("oben", marktplatz);
+                strandMitte.setzeAusgang("links", strandlinks);
+                strandMitte.setzeAusgang("rechts", strandOst);
+                strandOst.setzeAusgang("links", strandMitte);
+                strandlinks.setzeAusgang("rechts", strandMitte);
+                strandlinks.setzeAusgang("links", strandlinks2);
+                strandlinks2.setzeAusgang("rechts", strandlinks);
                 
-                offshore.setzeAusgang("north", strandWest2);
+                offshore.setzeAusgang("oben", strandlinks2);
                 
-                marktplatz.setzeAusgang("south", strandMitte);
+                marktplatz.setzeAusgang("unten", strandMitte);
                 
-                feld3.setzeAusgang("north", feld4);
-                feld4.setzeAusgang("south", feld3);                
-                feld1.setzeAusgang("west", feld3);
-                feld2.setzeAusgang("west", feld4);                
-                feld3.setzeAusgang("east", feld1);                
-                feld4.setzeAusgang("east", feld2); 
+                feld3.setzeAusgang("oben", feld4);
+                feld4.setzeAusgang("unten", feld3);                
+                feld1.setzeAusgang("links", feld3);
+                feld2.setzeAusgang("links", feld4);                
+                feld3.setzeAusgang("rechts", feld1);                
+                feld4.setzeAusgang("rechts", feld2); 
+                
+                feldRaeume.add(feld3);
+                feldRaeume.add(feld4);
+                
                 if(variation == 2){
                     Raum autobahn, marktplatz1;
                     
                     autobahn = new Raum("auf der Autobahn richtung Windhavn", false, false);
                     marktplatz1 = new Raum("am Marktplatz", false, false);
                     
-                    marktplatz.setzeAusgang("west", marktplatz1);
-                    marktplatz1.setzeAusgang("north", autobahn);
-                    marktplatz1.setzeAusgang("east", marktplatz); 
-                    marktplatz1.setzeAusgang("south", strandWest); 
-                    marktplatz1.setzeAusgang("west", bahnhof); 
+                    marktplatz.setzeAusgang("links", marktplatz1);
+                    marktplatz1.setzeAusgang("oben", autobahn);
+                    marktplatz1.setzeAusgang("rechts", marktplatz); 
+                    marktplatz1.setzeAusgang("unten", strandlinks); 
+                    marktplatz1.setzeAusgang("links", bahnhof); 
                     
-                    autobahn.setzeAusgang("south", marktplatz1);                    
-                    bahnhof.setzeAusgang("east", marktplatz1);
-                    strandWest.setzeAusgang("south", offshore);
-                    strandWest.setzeAusgang("north", marktplatz1);
-                    offshore.setzeAusgang("north", strandWest);
+                    autobahn.setzeAusgang("unten", marktplatz1);                    
+                    bahnhof.setzeAusgang("rechts", marktplatz1);
+                    strandlinks.setzeAusgang("unten", offshore);
+                    strandlinks.setzeAusgang("oben", marktplatz1);
+                    offshore.setzeAusgang("oben", strandlinks);
                     
-                    feld1.setzeAusgang("east", feld3);
-                    feld2.setzeAusgang("east", feld4);                
-                    feld3.setzeAusgang("west", feld1);                
-                    feld4.setzeAusgang("west", feld2);                
+                    feld1.setzeAusgang("rechts", feld3);
+                    feld2.setzeAusgang("rechts", feld4);                
+                    feld3.setzeAusgang("links", feld1);                
+                    feld4.setzeAusgang("links", feld2);                
                 }
                 else{
-                    strandWest2.setzeAusgang("south", offshore);
+                    strandlinks2.setzeAusgang("unten", offshore);
                 }
             }
                       
            bahnhofCheck = bahnhof;     // zum vergleich       
-           feldCheck = feld;           // zum vergleich   
            aktuellerRaum = bahnhof;    // das Spiel startet am Bahnhof
         }
         
@@ -173,7 +181,7 @@ public class Region
         Raum naechsterRaum = aktuellerRaum.gibAusgang(richtung);
 
         if (naechsterRaum == null) {
-            System.out.println("Dort ist keine Tür!");
+            System.out.println("Dort ist keine Tuer!");
             return false;
         }
         else {
@@ -184,9 +192,9 @@ public class Region
     }
     
     /**
-     * Definiere einen Ausgang für diese Region.
+     * Definiere einen Ausgang fuer diese Region.
      * @param richtung die Richtung, in der der Ausgang liegen soll
-     * @param nachbar der Region, der über diesen Ausgang erreicht wird
+     * @param nachbar der Region, der ueber diesen Ausgang erreicht wird
      */
     public void setzeAusgang(String richtung, Region nachbar) 
     {
@@ -195,7 +203,7 @@ public class Region
 
     /**
      * @return die kurze Beschreibung dieser Region (die dem Konstruktor
-     * übergeben wurde).
+     * uebergeben wurde).
      */
     public String gibBeschreibung()
     {
@@ -204,7 +212,7 @@ public class Region
     
     /**
      * @return die kurze Beschreibung dieser Region (die dem Konstruktor
-     * übergeben wurde).
+     * uebergeben wurde).
      */
     public Raum gibAktuellerRaum()
     {
@@ -213,8 +221,8 @@ public class Region
 
     /**
      * Liefere eine lange Beschreibung diese Region, in der Form:
-     *     Sie sind in der Küche der Region Hamburg.
-     *     Ausgänge: nord west
+     *     Sie sind in der Kueche der Region Hamburg.
+     *     Ausgaenge: nord links
      * @return eine lange Beschreibung dieser Region.
      */
     public String gibLangeBeschreibung()
@@ -223,14 +231,14 @@ public class Region
     }
 
     /**
-     * Liefere eine Zeichenkette, die die Ausgänge dieser Region
+     * Liefere eine Zeichenkette, die die Ausgaenge dieser Region
      * beschreibt, beispielsweise
-     * "Ausgänge: north west".
-     * @return eine Beschreibung der Ausgänge dieser Region.
+     * "Ausgaenge: oben links".
+     * @return eine Beschreibung der Ausgaenge dieser Region.
      */
     private String gibAusgaengeAlsStringRaum()
     {
-        String ergebnis = "Ausgänge:" + aktuellerRaum.gibAusgaengeAlsString();
+        String ergebnis = "Ausgaenge:" + aktuellerRaum.gibAusgaengeAlsString();
         if(amBahnhof())
         {
         ergebnis += gibAusgaengeAlsString();
@@ -239,10 +247,10 @@ public class Region
     }
     
     /**
-     * Liefere eine Zeichenkette, die die Ausgänge dieser Region
+     * Liefere eine Zeichenkette, die die Ausgaenge dieser Region
      * beschreibt, beispielsweise
-     * "Ausgänge: north west".
-     * @return eine Beschreibung der Ausgänge dieser Region.
+     * "Ausgaenge: oben links".
+     * @return eine Beschreibung der Ausgaenge dieser Region.
      */
     private String gibAusgaengeAlsString()
     {
@@ -277,7 +285,7 @@ public class Region
     
     public boolean amFeld()
     {
-        if (aktuellerRaum == feldCheck){
+        if (feldRaeume.contains(aktuellerRaum)){
             return true;
         }
         else{

@@ -9,9 +9,9 @@
  *  an ihr die Methode "spielen" aufgerufen werden.
  * 
  *  Diese Instanz dieser Klasse erzeugt und initialisiert alle
- *  anderen Objekte der Anwendung: Sie legt alle Räume und einen
+ *  anderen Objekte der Anwendung: Sie legt alle Raeume und einen
  *  Parser an und startet das Spiel. Sie wertet auch die Befehle
- *  aus, die der Parser liefert und sorgt für ihre Ausführung.
+ *  aus, die der Parser liefert und sorgt fuer ihre Ausfuehrung.
  * 
  * @author  Michael Kölling, David J. Barnes, Michal Kos und Cedrik Wilke
  * @version 21.05.2025
@@ -34,7 +34,7 @@ class Spiel
     }
 
     /**
-     * Erzeuge alle Regionen und verbinde ihre Ausgänge miteinander.
+     * Erzeuge alle Regionen und verbinde ihre Ausgaenge miteinander.
      */
     private void regionAnlegen()
     {
@@ -47,12 +47,12 @@ class Spiel
         Kraftia = new Region(" in Kraftia", 0);
         SolariaWest = new Region(" in Solaria-West", 0);
         SolariaOst = new Region(" in Solaria-Ost", 0);
-        Westseekueste = new Region(" an der Westseeküste", 1);
-        Suedseekueste = new Region(" an der Südseeküste", 2);
+        Westseekueste = new Region(" an der Westseekueste", 1);
+        Suedseekueste = new Region(" an der Suedseekueste", 2);
         Hauptstadt = new Region(" in der Hauptstadt", 0);
         Windhavn = new Region(" in Windhavn", 0);
         
-        // die Ausgänge initialisieren
+        // die Ausgaenge initialisieren
         Voltavia.setzeAusgang("rechts", Wattental);
         Voltavia.setzeAusgang("unten", Windhain);
 
@@ -72,21 +72,21 @@ class Spiel
         SolariaWest.setzeAusgang("oben", Windhain);
 
         SolariaOst.setzeAusgang("links", SolariaWest);
-        SolariaOst.setzeAusgang("unten", Südseekueste);
+        SolariaOst.setzeAusgang("unten", Suedseekueste);
         SolariaOst.setzeAusgang("oben", Kraftia);
 
-        Westseekueste.setzeAusgang("rechts", Südseekueste);
+        Westseekueste.setzeAusgang("rechts", Suedseekueste);
         Westseekueste.setzeAusgang("oben", SolariaWest);
 
-        Südseekueste.setzeAusgang("links", Westseekueste);
-        Südseekueste.setzeAusgang("oben", SolariaOst);
+        Suedseekueste.setzeAusgang("links", Westseekueste);
+        Suedseekueste.setzeAusgang("oben", SolariaOst);
         
         aktuelleRegion = Suedseekueste;  // das Spiel startet in Suedseekueste
 
     }
 
     /**
-     * Die Hauptmethode zum Spielen. Läuft bis zum Ende des Spiels
+     * Die Hauptmethode zum Spielen. Laeuft bis zum Ende des Spiels
      * in einer Schleife.
      */
     public void spielen() 
@@ -94,18 +94,18 @@ class Spiel
         willkommenstextAusgeben();
 
         // Die Hauptschleife. Hier lesen wir wiederholt Befehle ein
-        // und führen sie aus, bis das Spiel beendet wird.
+        // und fuehren sie aus, bis das Spiel beendet wird.
 
         boolean beendet = false;
         while (! beendet) {
             Befehl befehl = parser.liefereBefehl();
             beendet = verarbeiteBefehl(befehl);
         }
-        System.out.println("Danke für dieses Spiel. Auf Wiedersehen.");
+        System.out.println("Danke fuer dieses Spiel. Auf Wiedersehen.");
     }
 
     /**
-     * Einen Begrüßungstext für den Spieler ausgeben.
+     * Einen Begrueßungstext fuer den Spieler ausgeben.
      */
     private void willkommenstextAusgeben()
     {
@@ -120,7 +120,7 @@ class Spiel
     }
 
     /**
-     * Verarbeite einen gegebenen Befehl (führe ihn aus).
+     * Verarbeite einen gegebenen Befehl (fuehre ihn aus).
      * @param befehl Der zu verarbeitende Befehl.
      * @return 'true', wenn der Befehl das Spiel beendet, 'false' sonst.
      */
@@ -168,9 +168,9 @@ class Spiel
      */
     private void hilfstextAusgeben() 
     {
-        System.out.println("Sie sind die letzte Hoffnung für das Land!!!");        
+        System.out.println("Sie sind die letzte Hoffnung fuer das Land!!!");        
         System.out.println();
-        System.out.println("Ihnen stehen folgende Befehle zur Verfügung:");
+        System.out.println("Ihnen stehen folgende Befehle zur Verfuegung:");
         parser.zeigeBefehle();
     }
 
@@ -204,7 +204,7 @@ class Spiel
             }
         }
         else {
-            System.out.println("Hier fahren keine Züge!");
+            System.out.println("Hier fahren keine Zuege!");
         }
     }
 
@@ -222,16 +222,16 @@ class Spiel
 
                 if (anlagenArt.equals("wind")) {
                     System.out.println("Es wurde eine Windkraftanlage" + aktuelleRegion.gibBeschreibung() + 
-                    " gebaut (-1 Münze).");
-                    System.out.println("Du erhältst nun immer 1 Münze, wenn du mit einem Zug fährst.");
+                    " gebaut (-1 Muenze).");
+                    System.out.println("Du erhaeltst nun immer 1 Muenze, wenn du mit einem Zug faehrst.");
                     aktuellerRaum.setzeBebaut(true);
                     spieler.aendereGeld(-1);
                     spieler.aendereEinkommen(1);
                     spieler.aendereAnsehen(1);
                 } else if (anlagenArt.equals("solar")) {
                     System.out.println("Es wurde eine Solaranlage" + aktuelleRegion.gibBeschreibung() + 
-                    " gebaut (-2 Münzen).");
-                    System.out.println("Du erhältst nun immer 2 Münzen, wenn du mit einem Zug fährst.");
+                    " gebaut (-2 Muenzen).");
+                    System.out.println("Du erhaeltst nun immer 2 Muenzen, wenn du mit einem Zug faehrst.");
                     aktuellerRaum.setzeBebaut(true);
                     spieler.aendereGeld(-2);
                     spieler.aendereEinkommen(2);
@@ -253,7 +253,7 @@ class Spiel
     }
 
     /**
-     * "quit" wurde eingegeben. Überprüfe den Rest des Befehls,
+     * "quit" wurde eingegeben. Überpruefe den Rest des Befehls,
      * ob das Spiel wirklich beendet werden soll.
      * @return 'true', wenn der Befehl das Spiel beendet, 'false' sonst.
      */
