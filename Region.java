@@ -22,7 +22,7 @@ public class Region
      * Erzeuge eine Region mit einer Beschreibung. Eine Region
      * hat anfangs keine Ausgaenge. 
      * Die Raeume werden angelegt. Es sind verschiedene Variationen
-     * möglich. 
+     * mÃ¶glich. 
      * @param beschreibung enthaelt eine Beschreibung in der Form
      *        "in einer Kueche" oder "auf einem Sportplatz".
      *        Als zweites wird die Variation der Raeume gewaehlt.
@@ -72,7 +72,7 @@ public class Region
             // die Raeume erzeugen
             bahnhof = new Raum("am Hauptbahnhof", false, false);
             marktplatz = new Raum("am Marktplatz", false, false);
-            bauamt = new Raum("im Bauamt f�r Zukunftsenergie (BZEG)", false, false);
+            bauamt = new Raum("im Bauamt für Zukunftsenergie (BZEG)", false, false);
             feld1 = new Raum("auf einem Feld",true, false);
             feld2 = new Raum("auf einem Feld",true, false);
         
@@ -125,6 +125,7 @@ public class Region
                 
                 feldRaeume.add(feld3);
                 feldRaeume.add(feld4);
+                feldRaeume.add(offshore);
                 
                 if(variation == 2){
                     Raum autobahn, marktplatz1;
@@ -171,7 +172,7 @@ public class Region
     {
         if(!befehl.hatZweitesWort()) {
             // Gibt es kein zweites Wort, wissen wir nicht, wohin...
-            System.out.println("Wohin möchten Sie gehen?");
+            System.out.println("Wohin mÃ¶chten Sie gehen?");
             return false;
         }
 
