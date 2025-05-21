@@ -1,8 +1,10 @@
 #BlueJ class context
-comment0.params=befehlswort
-comment0.target=Befehlswort(java.lang.String)
-comment0.text=\r\n\ Initialisieren\ mit\ dem\ entsprechenden\ Befehlswort.\r\n\ @param\ befehlswort\ Das\ Befehlswort\ als\ Zeichenkette.\r\n
-comment1.params=
-comment1.target=java.lang.String\ toString()
-comment1.text=\r\n\ @return\ Das\ Befehlswort\ als\ Zeichenkette.\r\n
-numComments=2
+comment0.target=Befehlswort
+comment0.text=\r\n\ Repr\u00E4sentationen\ f\u00FCr\ alle\ g\u00FCltigen\ Befehlsw\u00F6rter\ des\ Spiels,\r\n\ zusammen\ mit\ einer\ Zeichenkette\ in\ einer\ bestimmten\ Sprachen.\r\n\ \r\n\ @author\ \ Michael\ K\u00F6lling\ und\ David\ J.\ Barnes\r\n\ @version\ 31.07.2011\r\n
+comment1.params=befehlswort
+comment1.target=Befehlswort(java.lang.String)
+comment1.text=\r\n\ Initialisieren\ mit\ dem\ entsprechenden\ Befehlswort.\r\n\ @param\ befehlswort\ das\ Befehlswort\ als\ Zeichenkette.\r\n
+comment2.params=
+comment2.target=java.lang.String\ toString()
+comment2.text=\r\n\ @return\ das\ Befehlswort\ als\ Zeichenkette.\r\n
+numComments=3

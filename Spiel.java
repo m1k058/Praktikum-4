@@ -13,53 +13,52 @@
  *  Parser an und startet das Spiel. Sie wertet auch die Befehle
  *  aus, die der Parser liefert und sorgt für ihre Ausführung.
  * 
- * @author  Michael Kölling und David J. Barnes
- * @version 31.07.2011
+ * @author  Michael Kölling, David J. Barnes, Michal Kos und Cedrik Wilke
+ * @version 21.05.2025
  */
 
 class Spiel 
 {
     private Parser parser;
-    private Raum aktuellerRaum;
+    private Region aktuelleRegion;
+    
         
     /**
      * Erzeuge ein Spiel und initialisiere die interne Raumkarte.
      */
     public Spiel() 
     {
-        raeumeAnlegen();
+        regionAnlegen();
         parser = new Parser();
     }
 
     /**
-     * Erzeuge alle Räume und verbinde ihre Ausgänge miteinander.
+     * Erzeuge alle Regionen und verbinde ihre Ausgänge miteinander.
      */
-    private void raeumeAnlegen()
+    private void regionAnlegen()
     {
-        Raum draussen, hoersaal, cafeteria, labor, buero;
+        Region region1, region2, region3, region4;
       
-        // die Räume erzeugen
-        draussen = new Raum("vor dem Haupteingang der Universität");
-        hoersaal = new Raum("in einem Vorlesungssaal");
-        cafeteria = new Raum("in der Cafeteria der Uni");
-        labor = new Raum("in einem Rechnerraum");
-        buero = new Raum("im Verwaltungsbüro der Informatik");
+        // die Regionen erzeugen
+        region1 = new Region("in Region1");
+        region2 = new Region("in Region2");
+        region3 = new Region("in Region3");
+        region4 = new Region("in Region4");
         
         // die Ausgänge initialisieren
-        draussen.setzeAusgang("east", hoersaal);
-        draussen.setzeAusgang("south", labor);
-        draussen.setzeAusgang("west", cafeteria);
-
-        hoersaal.setzeAusgang("west", draussen);
-
-        cafeteria.setzeAusgang("east", draussen);
-
-        labor.setzeAusgang("north", draussen);
-        labor.setzeAusgang("east", buero);
-
-        buero.setzeAusgang("west", labor);
-
-        aktuellerRaum = draussen;  // das Spiel startet draussen
+        region1.setzeAusgang("east", region2);
+        region1.setzeAusgang("south", region3);
+        
+        region2.setzeAusgang("west", region1);
+        region2.setzeAusgang("south", region4);
+        
+        region3.setzeAusgang("east", region4);
+        region3.setzeAusgang("north", region1);
+        
+        region4.setzeAusgang("west", region3);
+        region4.setzeAusgang("north", region2);
+        
+        aktuelleRegion = region1;  // das Spiel startet in region1
     }
 
     /**
@@ -87,11 +86,12 @@ class Spiel
     private void willkommenstextAusgeben()
     {
         System.out.println();
-        System.out.println("Willkommen zu Zuul!");
-        System.out.println("Zuul ist ein neues, unglaublich langweiliges Spiel.");
+        System.out.println("Willkommen im Neuland Alpha!");
+        System.out.println("Das Neuland ist ein sehr gut und weit unterentwickeltes");
+        System.out.println("Land aber es braucht deine Hilfe um wieder auf die Beine zu kommen!");
         System.out.println("Tippen sie '" + Befehlswort.HELP + "', wenn Sie Hilfe brauchen.");
         System.out.println();
-        System.out.println(aktuellerRaum.gibLangeBeschreibung());
+        System.out.println(aktuelleRegion.gibLangeBeschreibung());
     }
 
     /**
@@ -115,7 +115,7 @@ class Spiel
                 break;
                 
             case GO:
-                wechsleRaum(befehl);
+                aktuelleRegion.wechsleRaum(befehl);
                 break;
                 
             case QUIT:
@@ -147,27 +147,7 @@ class Spiel
      * wechsele in den neuen Raum, ansonsten gib eine Fehlermeldung
      * aus.
      */
-    private void wechsleRaum(Befehl befehl) 
-    {
-        if(!befehl.hatZweitesWort()) {
-            // Gibt es kein zweites Wort, wissen wir nicht, wohin...
-            System.out.println("Wohin möchten Sie gehen?");
-            return;
-        }
-
-        String richtung = befehl.gibZweitesWort();
-
-        // Wir versuchen, den Raum zu verlassen.
-        Raum naechsterRaum = aktuellerRaum.gibAusgang(richtung);
-
-        if (naechsterRaum == null) {
-            System.out.println("Dort ist keine Tür!");
-        }
-        else {
-            aktuellerRaum = naechsterRaum;
-            System.out.println(aktuellerRaum.gibLangeBeschreibung());
-        }
-    }
+    
 
     /**
      * "quit" wurde eingegeben. Überprüfe den Rest des Befehls,
