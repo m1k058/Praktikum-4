@@ -40,16 +40,16 @@ class Spiel
         Region Voltavia, Wattental, Windhain, Kraftia, SolariaWest, SolariaOst, Westseekueste, Südseekueste, Hauptstadt, Windhavn;
       
         // die Regionen erzeugen
-        Voltavia = new Region(" in Voltavia");
-        Wattental = new Region(" in Wattental");
-        Windhain = new Region(" in Windhain");
-        Kraftia = new Region(" in Kraftia");
-        SolariaWest = new Region(" in Solaria-West");
-        SolariaOst = new Region(" in Solaria-Ost");
-        Westseekueste = new Region(" in Westseeküste");
-        Südseekueste = new Region(" in Südseeküste");
-        Hauptstadt = new Region(" in Hauptstadt");
-        Windhavn = new Region(" in Windhavn");
+        Voltavia = new Region(" in Voltavia", 0);
+        Wattental = new Region(" in Wattental", 0);
+        Windhain = new Region(" in Windhain", 0);
+        Kraftia = new Region(" in Kraftia", 0);
+        SolariaWest = new Region(" in Solaria-West", 0);
+        SolariaOst = new Region(" in Solaria-Ost", 0);
+        Westseekueste = new Region(" in Westseeküste", 0);
+        Südseekueste = new Region(" in Südseeküste", 0);
+        Hauptstadt = new Region(" in Hauptstadt", 0);
+        Windhavn = new Region(" in Windhavn", 0);
         
         // die Ausgänge initialisieren
         Voltavia.setzeAusgang("east", Wattental);

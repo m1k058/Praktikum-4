@@ -17,47 +17,53 @@ public class Region
 
     /**
      * Erzeuge eine Region mit einer Beschreibung. Eine Region
-     * hat anfangs keine Ausgänge.
+     * hat anfangs keine Ausgänge. 
+     * Die Räume werden angelegt. Es sind verschiedene Variationen
+     * möglich. 
      * @param beschreibung enthält eine Beschreibung in der Form
      *        "in einer Küche" oder "auf einem Sportplatz".
+     *        Als zweites wird die Variation der Räume gewählt.
      */
-    public Region(String beschreibung) 
+    public Region(String beschreibung, int variation) 
     {
         this.beschreibung = beschreibung;
         ausgaenge = new HashMap<String, Region>();
-        raeumeAnlegen();
+        raeumeAnlegen(variation);
     }
     
     /**
      * Erzeuge alle Räume und verbinde ihre Ausgänge miteinander.
+     * Es sind verschiede variationen verfügbar.
      */
-    private void raeumeAnlegen()
+    private void raeumeAnlegen(int variation)
     {
-        Raum bahnhof, marktplatz, regionkanzlei, autobahn, feld;
+        if(variation == 0){
+            Raum bahnhof, marktplatz, regionkanzlei, autobahn, feld;
       
-        // die Räume erzeugen
-        bahnhof = new Raum("am Hauptbahnhof");
-        marktplatz = new Raum("am Marktplatz");
-        regionkanzlei = new Raum("in der Regionkanzlei");
-        autobahn = new Raum("auf der Autobahn");
-        feld = new Raum("auf einem Feld");
+            // die Räume erzeugen
+            bahnhof = new Raum("am Hauptbahnhof");
+            marktplatz = new Raum("am Marktplatz");
+            regionkanzlei = new Raum("in der Regionkanzlei");
+            autobahn = new Raum("auf der Autobahn");
+            feld = new Raum("auf einem Feld");
         
-        // die Ausgänge initialisieren
-        marktplatz.setzeAusgang("north", regionkanzlei);
-        marktplatz.setzeAusgang("east", bahnhof);
-        marktplatz.setzeAusgang("south", autobahn);
+            // die Ausgänge initialisieren
+            marktplatz.setzeAusgang("north", regionkanzlei);
+            marktplatz.setzeAusgang("east", bahnhof);
+            marktplatz.setzeAusgang("south", autobahn);
 
-        regionkanzlei.setzeAusgang("west", marktplatz);
+            regionkanzlei.setzeAusgang("west", marktplatz);
 
-        bahnhof.setzeAusgang("west", marktplatz);
+            bahnhof.setzeAusgang("west", marktplatz);
 
-        autobahn.setzeAusgang("north", marktplatz);
-        autobahn.setzeAusgang("south", feld);
-
-        feld.setzeAusgang("north", autobahn);
+            autobahn.setzeAusgang("north", marktplatz);
+            autobahn.setzeAusgang("south", feld);
+    
+            feld.setzeAusgang("north", autobahn);
         
-        bahnhofCheck = bahnhof;     // zum vergleich         
-        aktuellerRaum = bahnhof;  // das Spiel startet am Bahnhof
+            bahnhofCheck = bahnhof;     // zum vergleich         
+            aktuellerRaum = bahnhof;  // das Spiel startet am Bahnhof
+        }
     }
     
     /**
