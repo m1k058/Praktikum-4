@@ -29,7 +29,7 @@ class Spiel
     public Spiel() 
     {
         regionAnlegen();
-        spieler = new Spieler(5, 0, 100);
+        spieler = new Spieler(5, 0, 100, 0);
         parser = new Parser();
     }
 
@@ -39,7 +39,7 @@ class Spiel
     private void regionAnlegen()
     {
         Region Voltavia, Wattental, Windhain, Kraftia, SolariaWest, SolariaOst, Westseekueste, Südseekueste, Hauptstadt, Windhavn;
-        
+
         // die Regionen erzeugen
         Voltavia = new Region(" in Voltavia");
         Wattental = new Region(" in Wattental");
@@ -96,11 +96,17 @@ class Spiel
         // und führen sie aus, bis das Spiel beendet wird.
 
         boolean beendet = false;
-        while (! beendet) {
+        while (!beendet && spieler.gibAnsehen() > 0 && spieler.gibGebauteAnlagen() < 8) {
             Befehl befehl = parser.liefereBefehl();
             beendet = verarbeiteBefehl(befehl);
         }
-        System.out.println("Danke für dieses Spiel. Auf Wiedersehen.");
+        if (spieler.gibAnsehen() <= 0) {
+            System.out.println("Dein Ansehen ist auf 0 gesunken, du hast verloren! Danke für dieses Spiel.");
+        } else if (spieler.gibGebauteAnlagen() == 8) {
+            System.out.println("Du hast gewonnen und Neuland gerettet! Danke für dieses Spiel.");
+        } else {
+            System.out.println("Danke für dieses Spiel. Auf Wiedersehen.");
+        }
     }
 
     /**
@@ -199,6 +205,7 @@ class Spiel
                 aktuelleRegion = naechsteRegion;
                 System.out.println(aktuelleRegion.gibLangeBeschreibung());
                 spieler.aendereGeld(spieler.gibEinkommen());
+                spieler.aendereAnsehen(-5);
                 spieler.ausgeben();
             }
         }
@@ -220,25 +227,35 @@ class Spiel
                 String anlagenArt = befehl.gibZweitesWort();
 
                 if (anlagenArt.equals("wind")) {
-                    System.out.println("Es wurde eine Windkraftanlage" + aktuelleRegion.gibBeschreibung() + 
-                    " gebaut (-1 Münze).");
-                    System.out.println("Du erhältst nun immer 1 Münze, wenn du mit einem Zug fährst.");
-                    aktuellerRaum.setzeBebaut(true);
-                    spieler.aendereGeld(-1);
-                    spieler.aendereEinkommen(1);
-                    spieler.aendereAnsehen(1);
+                    if (spieler.gibGeld() >= 1) {
+                        System.out.println("Es wurde eine Windkraftanlage" + aktuelleRegion.gibBeschreibung() + 
+                            " gebaut (-1 Münze).");
+                        System.out.println("Du erhältst nun immer 1 Münze, wenn du mit einem Zug fährst.");
+                        aktuellerRaum.setzeBebaut(true);
+                        spieler.aendereGeld(-1);
+                        spieler.aendereEinkommen(1);
+                        spieler.aendereAnsehen(1);
+                        spieler.aendereGebauteAnlagen(1);
+                    } else {
+                        System.out.println("Du benötigst 1 Münze, um eine Windkraftanlage zu bauen!");                        
+                    }
                 } else if (anlagenArt.equals("solar")) {
-                    System.out.println("Es wurde eine Solaranlage" + aktuelleRegion.gibBeschreibung() + 
-                    " gebaut (-2 Münzen).");
-                    System.out.println("Du erhältst nun immer 2 Münzen, wenn du mit einem Zug fährst.");
-                    aktuellerRaum.setzeBebaut(true);
-                    spieler.aendereGeld(-2);
-                    spieler.aendereEinkommen(2);
-                    spieler.aendereAnsehen(2);
+                    if (spieler.gibGeld() >= 2) {
+                        System.out.println("Es wurde eine Solaranlage" + aktuelleRegion.gibBeschreibung() + 
+                            " gebaut (-2 Münzen).");
+                        System.out.println("Du erhältst nun immer 2 Münzen, wenn du mit einem Zug fährst.");
+                        aktuellerRaum.setzeBebaut(true);
+                        spieler.aendereGeld(-2);
+                        spieler.aendereEinkommen(2);
+                        spieler.aendereAnsehen(2);
+                        spieler.aendereGebauteAnlagen(1);
+                    }else {
+                        System.out.println("Du benötigst 2 Münzen, um eine Solaranlage zu bauen!");
+                    }
                 }
                 else {
                     System.out.println("Es können Windkraftanlagen (Befehl 'wind') " +
-                    "oder Solaranlagen (Befehl 'solar') gebaut werden");
+                        "oder Solaranlagen (Befehl 'solar') gebaut werden");
                 }
 
             }

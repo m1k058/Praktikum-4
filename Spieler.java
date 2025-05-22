@@ -10,15 +10,17 @@ public class Spieler
     private int geld;
     private int einkommen;
     private int ansehen;
+    private int gebauteAnlagen;
 
     /**
      * Konstruktor für Objekte der Klasse Spieler
      */
-    public Spieler(int geld, int einkommen, int ansehen)
+    public Spieler(int geld, int einkommen, int ansehen, int gebauteAnlagen)
     {
         this.geld = geld;
         this.einkommen = einkommen;
         this.ansehen = ansehen;
+        this.gebauteAnlagen = gebauteAnlagen;
     }
 
     /**
@@ -46,6 +48,14 @@ public class Spieler
     }
     
     /**
+     * Gib Anzahl der gebauten Anlagen des Spielers zurück.
+     */
+    public int gibGebauteAnlagen()
+    {
+        return this.gebauteAnlagen;
+    }
+    
+    /**
      * Ändere Geld des Spielers.
      */
     public void aendereGeld(int aenderung)
@@ -67,6 +77,14 @@ public class Spieler
     public void aendereAnsehen(int aenderung)
     {
         ansehen += aenderung;
+    }
+    
+    /**
+     * Ändere die Anzahl der gebauten des Spielers.
+     */
+    public void aendereGebauteAnlagen(int aenderung)
+    {
+        gebauteAnlagen += aenderung;
     }
     
     public void ausgeben() {
