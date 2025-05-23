@@ -1,19 +1,31 @@
 
 /**
  * Repraesentationen fuer alle kategorien der Räume,
- * zusammen mit einer Zeichenkette in einer bestimmten Sprachen.
+ * zusammen mit einer Zeichenkette .
  * 
  * @author  Michal Kos
- * @version 22.05.2025
+ * @version 23.05.2025
  */
 public enum Raumkategorie
 {
     // Ein Wert fuer jedes Raumkategorie
-    MARKTPLATZ("Marktplatz"),FELD("Feld"), BAHNHOF("Bahnhof"), BAUAMT("Bauamt"), STRAND("Strand"), OFFSHORE("Offshore Baugebiet");
-    
-    // Das Raumkategorie als Zeichenkette.
-    private String kategorie;
-    
+    MARKTPLATZ("am Marktplatz"),
+
+    FELD("auf einem Feld"),
+
+    BAHNHOF("am Bahnhof"),
+
+    BAUAMT("im Bauamt Gebäude"),
+
+    STRAND("am Strand"),
+
+    OFFSHORE("am Offshore Baugebiet"),
+
+    AUTOBAHN("auf der Autobahn");
+
+    // Das Raumkategorie Beschreibung als Zeichenkette.
+    private final String kategorie;
+
     /**
      * Initialisieren mit der entsprechenden Raumkategorie.
      * @param kategorie des Raums als Zeichenkette.
@@ -22,12 +34,15 @@ public enum Raumkategorie
     {
         this.kategorie = kategorie;
     }
-    
+
     /**
-     * @return die Raumkategorie als Zeichenkette.
+     * Gibt die Beschreibung der Kategorie aus
+     *
+     * @return    Beschreibung der Kategorie
      */
-    public String toString()
+    public String gibBeschreibung()
     {
         return kategorie;
     }
+
 }
