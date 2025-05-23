@@ -1,6 +1,5 @@
 import java.util.Set;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Diese Klasse modelliert Räume im Neualand.
@@ -65,6 +64,16 @@ class Raum
     public String gibBeschreibung()
     {
         return kategorie.gibBeschreibung();
+    }
+
+    /**
+     * Gibt die kategorie des Raums zurück
+     *
+     * @return    Raumkategorie kategorie
+     */
+    public Raumkategorie gibKategorie()
+    {
+        return kategorie;
     }
 
 }

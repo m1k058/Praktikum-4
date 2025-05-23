@@ -1,33 +1,63 @@
 
 /**
- * Write a description of class TravelRaum here.
+ * Die Klasse TravelRaum erweitert die Klasse Raum um
+ * die möglichkeit aus der Region sich rauszubewegen. 
+ * Man kann 
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Michal Kos
+ * @version 23.05.2025
  */
 public class TravelRaum extends Raum
 {
-    // instance variables - replace the example below with your own
-    private int x;
-
+    private boolean zug;
+    private boolean auto;
     /**
      * Constructor for objects of class TravelRaum
      */
-    public TravelRaum()
+    public TravelRaum(Raumkategorie kategorie)
     {
-        // initialise instance variables
-        x = 0;
+        super(kategorie);
+        auto = true;
+        zug = true;
     }
 
     /**
-     * An example of a method - replace this comment with your own
+     * Gibt aus ob der Raum erlaubt Zug zu fahren
      *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
+     * @return    true oder false 
      */
-    public int sampleMethod(int y)
+    public boolean zugErlaubt()
     {
-        // put your code here
-        return x + y;
+        return zug;
+    }
+
+    /**
+     * Gibt aus ob der Raum erlaubt Auto zu fahren
+     *
+     * @return    true oder false 
+     */
+    public boolean autoErlaubt()
+    {
+        return auto;
+    }
+
+    /**
+     * ändere die Erlaubniss Zug zu fahren
+     *
+     * @param  true oder false
+     */
+    public void erlaubnissZug(boolean erlaubniss)
+    {
+        zug = erlaubniss;
+    }
+    
+    /**
+     * ändere die Erlaubniss Auto zu fahren
+     *
+     * @param  true oder false
+     */
+    public void erlaubnissAuto(boolean erlaubniss)
+    {
+        auto = erlaubniss;
     }
 }
