@@ -1,0 +1,64 @@
+{
+  "regionen": [
+    {
+      "name": "RegionNord",
+      "ausgaenge": {
+        "sued": "RegionSued"
+      },
+      "raeume": [
+        {
+          "name": "Feld1",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "osten": "Feld2"
+          }
+        },
+        {
+          "name": "Feld2",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen": "Feld1",
+            "sued": "BahnhofNord"
+          }
+        },
+        {
+          "name": "BahnhofNord",
+          "kategorie": "BAHNHOF",
+          "ausgaenge": {
+            "nord": "Feld2"
+          }
+        }
+      ]
+    },
+    {
+      "name": "RegionSued",
+      "ausgaenge": {
+        "nord": "RegionNord"
+      },
+      "raeume": [
+        {
+          "name": "Feld3",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "osten": "Feld4"
+          }
+        },
+        {
+          "name": "Feld4",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen": "Feld3",
+            "sued": "BahnhofSued"
+          }
+        },
+        {
+          "name": "BahnhofSued",
+          "kategorie": "BAHNHOF",
+          "ausgaenge": {
+            "nord": "Feld4"
+          }
+        }
+      ]
+    }
+  ]
+}

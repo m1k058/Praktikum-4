@@ -46,7 +46,7 @@ class Raum
      * "Ausgänge: north west".
      * @return eine Beschreibung der Ausgänge dieses Raumes.
      */
-    public String gibAusgaengeAlsString()
+    public String gibRaumAusgaengeAlsString()
     {
         String ergebnis = "";
         Set<String> keys = ausgaenge.keySet();
