@@ -35,7 +35,7 @@ class Raum
      * @param richtung die Richtung, in der der Ausgang liegen soll
      * @param nachbar der Raum, der über diesen Ausgang erreicht wird
      */
-    public void setzeAusgang(String richtung, Raum nachbar) 
+    public void setzeAusgangRaum(String richtung, Raum nachbar) 
     {
         ausgaenge.put(richtung, nachbar);
     }
