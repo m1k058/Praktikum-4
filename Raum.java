@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Set;
+import java.util.HashMap;
 
 /**
  * Diese Klasse modelliert Räume im Neualand.
@@ -48,10 +49,17 @@ class Raum
      */
     public String gibRaumAusgaengeAlsString()
     {
-        String ergebnis = "";
+        String ergebnis = "Ausgaenge: ";
         Set<String> keys = ausgaenge.keySet();
-        for(String ausgang : keys)
+        boolean ersterAusgang = true;
+        for(String ausgang : keys){            
+            if (ersterAusgang) {
             ergebnis += " " + ausgang;
+            ersterAusgang = false;
+            } else {
+            ergebnis += ", " + ausgang;
+            }
+        }
         return ergebnis;
     }
     

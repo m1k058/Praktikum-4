@@ -33,9 +33,15 @@ class Spiel
     {
         spieler = new Spieler(5, 0, 100);
         parser = new Parser();
-        spielumgebung = new Spielumgebung("map_v1.json");
-        
-        aktuellerRaum = aktuelleRegion.getRaum("Bahnhof");
+        try {
+            spielumgebung = new Spielumgebung("map_v1.json");
+        } catch (Exception e) {
+            // Fehlerbehandlung wenn die Datei nicht gefunden wird oder fehlerhaft ist
+            System.err.println("Kritischer Fehler beim Laden der Spielumgebung: " + e.getMessage());
+            System.err.println("Das Spiel kann nicht gestartet werden. Bitte überprüfe die Datei 'map_v1.json'.");
+        }
+        aktuelleRegion = spielumgebung.gibRegion("Voltavia");
+        aktuellerRaum = aktuelleRegion.gibRaum("Bahnhof");
         
     }
 
@@ -77,6 +83,7 @@ class Spiel
      * Gibt die Informationen über den aktuellen Raum und die aktuelle Region aus.
      */
     private void raumInfoAusgeben() {
+        System.out.println();
         if (aktuellerRaum == null || aktuelleRegion == null) {
             System.out.println("Fehler: Aktueller Raum oder Region nicht definiert.");
             return;
@@ -217,9 +224,9 @@ class Spiel
             String zielRaumName = null;
 
             if ("Zug".equals(transportmittel)) {
-                ankunftsRaum = aktuelleRegion.getRaum("Bahnhof"); // Ankunft immer im Raum "Bahnhof"
+                ankunftsRaum = aktuelleRegion.gibRaum("Bahnhof"); // Ankunft immer im Raum "Bahnhof"
             } else if ("Auto".equals(transportmittel)) {
-                ankunftsRaum = aktuelleRegion.getRaum("Autobahn"); // Ankunft immer im Raum "Autobahn"
+                ankunftsRaum = aktuelleRegion.gibRaum("Autobahn"); // Ankunft immer im Raum "Autobahn"
             }
 
             if (ankunftsRaum != null) {

@@ -36,7 +36,7 @@ public class Region
      * @param  Name des Raumes
      * @return    Referenz auf den Raum
      */
-    public Raum getRaum(String raumName) {
+    public Raum gibRaum(String raumName) {
         return raeume.get(raumName);
     }
 
@@ -60,8 +60,15 @@ public class Region
     {
         String ergebnis = "";
         Set<String> keys = ausgaenge.keySet();
-        for(String ausgang : keys)
+        boolean ersterAusgang = true;
+        for(String ausgang : keys){            
+            if (ersterAusgang) {
             ergebnis += " " + ausgang;
+            ersterAusgang = false;
+            } else {
+            ergebnis += ", " + ausgang;
+            }
+        }
         return ergebnis;
     }
 

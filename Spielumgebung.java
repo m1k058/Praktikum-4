@@ -73,14 +73,14 @@ public class Spielumgebung
             for (Object ro : raeumeArray) {
                 JSONObject raumJSON = (JSONObject) ro;
                 String raumName = (String) raumJSON.get("name");
-                Raum raum = region.getRaum(raumName);
+                Raum raum = region.gibRaum(raumName);
 
                 JSONObject raumAusgaengeJSON = (JSONObject) raumJSON.get("ausgaenge");
                 if (raumAusgaengeJSON != null) {
                     for (Object key : raumAusgaengeJSON.keySet()) {
                         String richtung = (String) key;
                         String zielRaumName = (String) raumAusgaengeJSON.get(richtung);
-                        Raum zielRaum = region.getRaum(zielRaumName);
+                        Raum zielRaum = region.gibRaum(zielRaumName);
                         raum.setzeAusgangRaum(richtung, zielRaum);
                     }
                 }
