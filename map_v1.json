@@ -1,0 +1,167 @@
+{
+  "regionen": [
+    {
+      "name": "Voltavia",
+      "ausgaenge": {
+        "Wattetal": "Wattetal",
+        "Windhain": "Windhain"
+      },
+      "raeume": [
+        {
+          "name": "Feld1",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "osten": "Feld2",
+            "sueden":"Feld5"
+          }
+        },
+        {
+          "name": "Feld2",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen": "Feld1",
+            "sueden": "Feld6",
+            "osten": "Feld3"
+          }
+        },
+        {
+          "name": "Feld3",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen": "Feld2",
+            "sueden": "Feld7"
+          }
+        },
+        {
+          "name": "Feld4",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "osten": "Feld5"
+          }
+        },
+        {
+          "name": "Feld5",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "norden": "Feld1",
+            "osten": "Feld6",
+            "westen": "Feld4",
+            "sueden": "Feld9"
+          }
+        },
+        {
+          "name": "Feld6",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "norden": "Feld2",
+            "osten": "Feld7",
+            "westen": "Feld5",
+            "sueden": "Feld10"
+          }
+        },
+        {
+          "name": "Feld7",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "norden": "Feld3",
+            "osten": "Feld8",
+            "westen": "Feld6",
+            "sueden": "Feld11"
+          }
+        },
+        {
+          "name": "Feld8",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen": "Feld7"
+          }
+        },
+        {
+          "name": "Feld9",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "norden": "Feld5",
+            "osten": "Feld10"
+          }
+        },
+        {
+          "name": "Feld10",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "norden": "Feld6",
+            "osten": "Feld11",
+            "westen": "Feld9",
+            "sueden": "Marktplatz1"
+          }
+        },
+        {
+          "name": "Feld11",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen": "Feld10",
+            "sueden": "Feld12",
+            "norden": "Feld7"
+          }
+        },
+        {
+          "name": "Feld12",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "norden": "Feld11",
+            "sueden": "Bahnhof",
+            "westen": "Marktplatz1"
+          }
+        },
+        {
+          "name": "Bahnhof",
+          "kategorie": "BAHNHOF",
+          "ausgaenge": {
+            "nord": "Feld12",
+            "westen": "Marktplatz2"
+          }
+        },
+        {
+            "name": "Marktplatz1",
+            "kategorie": "MARKTPLATZ",
+            "ausgaenge":{
+                "nord": "Feld10",
+                "osten": "Feld12",
+                "sueden": "Marktplatz2"
+            }
+        },
+        {
+            "name": "Marktplatz2",
+            "kategorie": "MARKTPLATZ",
+            "ausgaenge":{
+                "nord": "Marktplatz1",
+                "osten": "Bahnhof",
+                "sueden": "Bauamt"
+            }
+        },
+        {
+            "name": "Bauamt",
+            "kategorie": "BAUAMT",
+            "ausgaenge":{
+                "osten": "Marktplatz2"
+            }
+        }
+      ]
+    },
+    {
+      "name": "Wattental",
+      "ausgaenge": {
+        "Voltavia": "Voltavia",
+        "Kraftia": "Kraftia"
+      },
+      "raeume": [
+        {
+          "name": "Bahnhof",
+          "kategorie": "BAHNHOF",
+          "ausgaenge": {
+            "nord": "Marktplatz1"
+          }
+        }
+      ]
+    }
+  ]
+}

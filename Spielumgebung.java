@@ -1,9 +1,7 @@
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
-import java.util.*;
 import java.util.HashMap;
-import java.util.Map;
 import java.io.FileReader;
 
 /**
@@ -94,13 +92,11 @@ public class Spielumgebung
     }
 
     /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
+     * Gibt die Region mit dem angegebenen Namen zurück.
+     * @param name Der Name der Region.
+     * @return Die Region oder null, falls nicht gefunden.
      */
-    public int sampleMethod(int y)
-    {
-        return 1;
+    public Region gibRegion(String name) {
+        return regionen.get(name);
     }
 }

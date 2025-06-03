@@ -1,6 +1,6 @@
 import java.util.HashMap;
 import java.util.Set;
-import java.util.HashSet;
+
 
 /**
  * Das ist eine Region. Sie besteht aus mehreren Raeumen. Es gibt immer einen Raum in der Region von
@@ -65,6 +65,17 @@ public class Region
         return ergebnis;
     }
 
+     /**
+     * Liefere die Region, die wir erreichen, wenn wir aus dieser Region
+     * in die angegebene Richtung gehen. Liefere 'null', wenn in
+     * dieser Richtung kein Ausgang ist.
+     * @param richtung die Richtung, in die gegangen werden soll.
+     * @return die Region in der angegebenen Richtung oder null.
+     */
+    public Region gibAusgangRegion(String richtung) {
+        return ausgaenge.get(richtung);
+    }
+    
     /**
      * @return die kurze Beschreibung dieser Region (die dem Konstruktor
      * uebergeben wurde).

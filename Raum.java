@@ -1,5 +1,5 @@
-import java.util.Set;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Diese Klasse modelliert Räume im Neualand.
@@ -53,6 +53,16 @@ class Raum
         for(String ausgang : keys)
             ergebnis += " " + ausgang;
         return ergebnis;
+    }
+    
+    /**
+     * Liefere den Raum, der in die angegebene Richtung liegt.
+     * Liefere null, wenn in dieser Richtung kein Ausgang ist.
+     * @param richtung Die Richtung des Ausgangs.
+     * @return Den Raum in der angegebenen Richtung oder null.
+     */
+    public Raum gibAusgangRaum(String richtung) {
+        return ausgaenge.get(richtung);
     }
 
     /**
