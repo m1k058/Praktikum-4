@@ -485,9 +485,126 @@
           "name": "Feld1",
           "kategorie": "FELD",
           "ausgaenge": {
-            "norden": "Feld2",
-            "westen":"Feld6",
-            "sueden":"Marktplatz2"
+            "osten":"Feld2",
+            "sueden":"Bauamt"
+          }
+        },
+        {
+          "name": "Feld2",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "osten": "Bahnhof",
+            "westen":"Feld1",
+            "sueden":"Marktplatz1"
+          }
+        },
+        {
+          "name": "Feld3",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen":"Marktplatz2",
+            "osten":"Feld4",
+            "sueden":"Feld5"
+          }
+        },
+        {
+          "name": "Feld4",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "sueden":"Feld6",
+            "westen":"Feld3"
+          }
+        },
+        {
+          "name": "Feld5",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "osten": "Feld6",
+            "norden":"Feld3",
+            "sueden":"Feld8"
+          }
+        },
+        {
+          "name": "Feld6",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "osten": "Feld7",
+            "westen":"Feld5",
+            "norden":"Feld4"
+          }
+        },
+        {
+          "name": "Feld7",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen": "Feld6"
+          }
+        },
+        {
+          "name": "Feld8",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "norden": "Feld5"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Solaria-Ost",
+      "ausgaenge": {
+        "Solaria-West": "Solaria-West",
+        "Kraftia": "Kraftia",
+        "Ostseekueste": "Ostseekueste"
+      },
+      "raeume": [
+        {
+          "name": "Bahnhof",
+          "kategorie": "BAHNHOF",
+          "ausgaenge": {
+            "norden": "Bauamt",
+            "osten":"Marktplatz2"
+          }
+        },
+        {
+          "name":"Marktplatz1",
+          "kategorie":"MARKTPLATZ",
+          "ausgaenge":{
+            "norden":"Feld1",
+            "osten":"Feld4",
+            "sueden":"Marktplatz2",
+            "westen":"Bauamt"
+          }
+        },
+        {
+          "name":"Marktplatz2",
+          "kategorie":"MARKTPLATZ",
+          "ausgaenge":{
+            "norden":"Marktplatz1",
+            "sueden":"Autobahn",
+            "westen":"Bahnhof"
+          }
+        },
+        {
+          "name":"Autobahn",
+          "kategorie":"AUTOBAHN",
+          "ausgaenge":{
+            "norden":"Marktplatz2"
+          }
+        },
+        {
+          "name":"Bauamt",
+          "kategorie":"BAUAMT",
+          "ausgaenge":{
+            "sueden":"Bahnhof",
+            "osten":"Marktplatz1"
+          }
+        },
+        {
+          "name": "Feld1",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "osten":"Feld2",
+            "sueden":"Marktplatz1"
           }
         },
         {
@@ -495,56 +612,545 @@
           "kategorie": "FELD",
           "ausgaenge": {
             "osten": "Feld3",
-            "westen":"Feld5",
-            "sueden":"Feld1"
+            "westen":"Feld1",
+            "sueden":"Feld4"
           }
         },
         {
           "name": "Feld3",
           "kategorie": "FELD",
           "ausgaenge": {
-            "westen":"Feld2"
+            "westen":"Feld3",
+            "sueden":"Feld5"
           }
         },
         {
           "name": "Feld4",
           "kategorie": "FELD",
           "ausgaenge": {
-            "sueden":"Feld5"
+            "norden":"Feld2",
+            "osten":"Feld5",
+            "westen":"Marktplatz1"
           }
         },
         {
           "name": "Feld5",
           "kategorie": "FELD",
           "ausgaenge": {
-            "osten": "Feld2",
-            "norden":"Feld4",
-            "sueden":"Feld6"
+            "westen":"Feld4",
+            "osten": "Feld6",
+            "norden":"Feld3",
+            "sueden":"Feld7"
           }
         },
         {
           "name": "Feld6",
           "kategorie": "FELD",
           "ausgaenge": {
-            "osten": "Feld1",
-            "westen":"Feld7",
-            "norden":"Feld5"
+            "westen": "Feld5"
           }
         },
         {
           "name": "Feld7",
           "kategorie": "FELD",
           "ausgaenge": {
-            "osten": "Feld6",
-            "sueden":"Feld8"
+            "norden": "Feld5"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hauptstadt",
+      "ausgaenge": {
+
+      },
+      "raeume": [
+        {
+          "name":"Marktplatz1",
+          "kategorie":"MARKTPLATZ",
+          "ausgaenge":{
+            "osten":"Marktplatz2",
+            "sueden":"Marktplatz3"
+          }
+        },
+        {
+          "name":"Marktplatz2",
+          "kategorie":"MARKTPLATZ",
+          "ausgaenge":{
+            "norden":"Feld1",
+            "osten":"Autobahn",
+            "sueden":"Marktplatz4",
+            "westen":"Marktplatz1"
+          }
+        },
+        {
+          "name":"Marktplatz3",
+          "kategorie":"MARKTPLATZ",
+          "ausgaenge":{
+            "norden":"Marktplatz1",
+            "osten":"Marktplatz4",
+            "sueden":"Bauamt",
+            "westen":"Bundestag"
+          }
+        },
+        {
+          "name":"Marktplatz4",
+          "kategorie":"MARKTPLATZ",
+          "ausgaenge":{
+            "norden":"Marktplatz2",
+            "westen":"Marktplatz3"
+          }
+        },
+        {
+          "name":"Autobahn",
+          "kategorie":"AUTOBAHN",
+          "ausgaenge":{
+            "westen":"Marktplatz2"
+          }
+        },
+        {
+          "name":"Bauamt",
+          "kategorie":"BAUAMT",
+          "ausgaenge":{
+            "norden":"Marktplatz3"
+          }
+        },
+        {
+          "name":"Bundesamt",
+          "kategorie":"BUNDESAMT",
+          "ausgaenge":{
+            "osten":"Marktplatz3"
+          }
+        },
+        {
+          "name": "Feld1",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "norden":"Feld3",
+            "sueden":"Marktplatz2"
+          }
+        },
+        {
+          "name": "Feld2",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "osten": "Feld3"
+          }
+        },
+        {
+          "name": "Feld3",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen":"Feld2",
+            "osten":"Feld4",
+            "sueden":"Feld1"
+          }
+        },
+        {
+          "name": "Feld4",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "norden":"Feld5",
+            "westen":"Feld3"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Windhavn",
+      "ausgaenge": {
+
+      },
+      "raeume": [
+        {
+          "name":"Marktplatz1",
+          "kategorie":"MARKTPLATZ",
+          "ausgaenge":{
+            "norden":"Feld1",
+            "osten":"Marktplatz2",
+            "sueden":"Marktplatz3"
+          }
+        },
+        {
+          "name":"Marktplatz2",
+          "kategorie":"MARKTPLATZ",
+          "ausgaenge":{
+            "norden":"Autobahn1",
+            "osten":"Bauamt",
+            "sueden":"Marktplatz4",
+            "westen":"Marktplatz1"
+          }
+        },
+        {
+          "name":"Marktplatz3",
+          "kategorie":"MARKTPLATZ",
+          "ausgaenge":{
+            "norden":"Marktplatz1",
+            "osten":"Marktplatz4"
+          }
+        },
+        {
+          "name":"Marktplatz4",
+          "kategorie":"MARKTPLATZ",
+          "ausgaenge":{
+            "norden":"Marktplatz2",
+            "sueden":"Autobahn2",
+            "westen":"Marktplatz3"
+          }
+        },
+        {
+          "name":"Autobahn1",
+          "kategorie":"AUTOBAHN",
+          "ausgaenge":{
+            "norden":"Feld4",
+            "sueden":"Marktplatz2",
+            "westen":"Feld1"
+          }
+        },
+        {
+          "name":"Autobahn2",
+          "kategorie":"AUTOBAHN",
+          "ausgaenge":{
+            "norden":"Marktplatz4"
+          }
+        },
+        {
+          "name":"Bauamt",
+          "kategorie":"BAUAMT",
+          "ausgaenge":{
+            "westen":"Marktplatz2"
+          }
+        },
+        {
+          "name": "Feld1",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "norden":"Feld3",
+            "osten":"Autobahn1",
+            "sueden":"Marktplatz1"
+          }
+        },
+        {
+          "name": "Feld2",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "osten": "Feld3"
+          }
+        },
+        {
+          "name": "Feld3",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen":"Feld2",
+            "osten":"Feld4",
+            "sueden":"Feld1"
+          }
+        },
+        {
+          "name": "Feld4",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "sueden":"Autobahn1",
+            "westen":"Feld3"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Westseekueste",
+      "ausgaenge": {
+        "Suedsekueste":"Suedsekueste",
+        "Solaria-West":"Solaria-West"
+      },
+      "raeume": [
+        {
+          "name":"Marktplatz",
+          "kategorie":"MARKTPLATZ",
+          "ausgaenge":{
+            "norden":"Feld7",
+            "osten":"Bauamt",
+            "sueden":"Strand3",
+            "westen":"Bahnhof"
+          }
+        },        
+        {
+          "name":"Bauamt",
+          "kategorie":"BAUAMT",
+          "ausgaenge":{
+            "westen":"Marktplatz",
+            "sueden":"Strand4"
+          }
+        },
+        {
+          "name":"Bahnhof",
+          "kategorie":"BAHNHOF",
+          "ausgaenge":{
+            "osten":"Marktplatz1",
+            "sueden":"Strand1"
+          }
+        },
+        {
+          "name": "Feld1",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "osten":"Feld2",
+            "sueden":"Feld5"
+          }
+        },
+        {
+          "name": "Feld2",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen": "Feld1",
+            "osten":"Feld3",
+            "sueden":"Feld6"
+          }
+        },
+        {
+          "name": "Feld3",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen":"Feld2",
+            "sueden":"Feld7"
+          }
+        },
+        {
+          "name": "Feld4",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "osten":"Feld5"
+          }
+        },
+        {
+          "name": "Feld5",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen": "Feld4",
+            "osten":"Feld6",
+            "norden":"Feld1"
+          }
+        },
+        {
+          "name": "Feld6",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "norden":"Feld2",
+            "westen": "Feld5",
+            "osten":"Feld7",
+            "sueden":"Bahnhof"
+          }
+        },
+        {
+          "name": "Feld7",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen": "Feld6",
+            "norden":"Feld3",
+            "sueden":"Marktplatz"
+          }
+        },
+        {
+          "name": "Strand1",
+          "kategorie": "STRAND",
+          "ausgaenge": {
+            "osten":"Strand2",
+            "sueden":"Offshore1"
+          }
+        },
+        {
+          "name": "Strand2",
+          "kategorie": "STRAND",
+          "ausgaenge": {
+            "norden":"Bahnhof",
+            "osten":"Strand3",
+            "sueden":"Offshore2",
+            "westen":"Strand1"
+          }          
+        },
+        {
+          "name": "Strand3",
+          "kategorie": "STRAND",
+          "ausgaenge": {
+            "norden":"Marktplatz",
+            "osten":"Strand4",
+            "westen":"Strand2"
+          }          
+        },
+        {
+          "name": "Strand4",
+          "kategorie": "STRAND",
+          "ausgaenge": {
+            "norden":"Bauamt",
+            "westen":"Strand3"
+          }          
+        }
+      ]
+    },
+    {
+      "name": "Suedseekueste",
+      "ausgaenge": {
+        "Westseekueste":"Westseekueste",
+        "Solaria-Ost":"Solaria-Ost"
+      },
+      "raeume": [
+        {
+          "name":"Marktplatz1",
+          "kategorie":"MARKTPLATZ",
+          "ausgaenge":{
+            "norden":"Autobahn",
+            "osten":"Marktplatz2",
+            "sueden":"Strand2",
+            "westen":"Bahnhof"
+          }
+        },   
+        {
+          "name":"Marktplatz2",
+          "kategorie":"MARKTPLATZ",
+          "ausgaenge":{
+            "norden":"Feld1",
+            "osten":"Bauamt",
+            "sueden":"Strand3",
+            "westen":"Marktplatz1"
+          }
+        },     
+        {
+          "name":"Bauamt",
+          "kategorie":"BAUAMT",
+          "ausgaenge":{
+            "norden":"Feld2",
+            "westen":"Marktplatz2",
+            "sueden":"Strand4"
+          }
+        },
+        {
+          "name":"Bahnhof",
+          "kategorie":"BAHNHOF",
+          "ausgaenge":{
+            "osten":"Marktplatz1",
+            "sueden":"Strand1"
+          }
+        },
+        {
+          "name": "Feld1",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "norden":"Feld3",
+            "osten":"Feld4",
+            "sueden":"Feld1"
+          }
+        },
+        {
+          "name": "Feld2",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "norden":"Feld4",
+            "westen":"Feld1",
+            "sueden":"Bauamt"
+          }
+        },
+        {
+          "name": "Feld3",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "norden":"Feld7",
+            "osten":"Fedl4",
+            "sueden":"Feld1"
+          }
+        },
+        {
+          "name": "Feld4",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "norden":"Feld8",
+            "osten":"Feld5",
+            "sueden":"Feld2",
+            "westen":"Feld3"
+          }
+        },
+        {
+          "name": "Feld5",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen": "Feld4",
+            "norden":"Feld9"
+          }
+        },
+        {
+          "name": "Feld6",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "osten":"Feld7"
+          }
+        },
+        {
+          "name": "Feld7",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen": "Feld6",
+            "osten":"Feld8",
+            "sueden":"Feld3"
           }
         },
         {
           "name": "Feld8",
           "kategorie": "FELD",
           "ausgaenge": {
-            "norden": "Feld7"
+            "westen": "Feld6",
+            "osten":"Feld9",
+            "sueden":"Feld4"
           }
+        },
+        {
+          "name": "Feld9",
+          "kategorie": "FELD",
+          "ausgaenge": {
+            "westen": "Feld8",
+            "sueden":"Feld5"
+          }
+        },
+        {
+          "name":"Autobahn",
+          "kategorie":"AUTOBAHN",
+          "ausgaenge":{
+            "osten":"Feld1",
+            "sueden":"Marktplatz1"
+          }
+        },
+        {
+          "name": "Strand1",
+          "kategorie": "STRAND",
+          "ausgaenge": {
+            "norden":"Bahnhof",
+            "osten":"Strand2"
+          }
+        },
+        {
+          "name": "Strand2",
+          "kategorie": "STRAND",
+          "ausgaenge": {
+            "norden":"Marktplatz1",
+            "osten":"Strand3",
+            "sueden":"Offshore1",
+            "westen":"Strand1"
+          }          
+        },
+        {
+          "name": "Strand3",
+          "kategorie": "STRAND",
+          "ausgaenge": {
+            "norden":"Marktplatz2",
+            "osten":"Strand4",
+            "westen":"Strand2"
+          }          
+        },
+        {
+          "name": "Strand4",
+          "kategorie": "STRAND",
+          "ausgaenge": {
+            "norden":"Bauamt",
+            "sueden":"Offshore2",
+            "westen":"Strand3"
+          }          
         }
       ]
     }
