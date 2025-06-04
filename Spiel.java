@@ -211,8 +211,7 @@ class Spiel
             System.out.println("Mögliche Regionen:" + aktuelleRegion.gibRegionAusgaengeAlsString()); //
             return;
         }
-        String richtung = befehl.gibZweitesWort(); //
-        Region naechsteRegion = aktuelleRegion.gibAusgangRegion(richtung);
+        Region naechsteRegion = spielumgebung.gibRegion(befehl.gibZweitesWort());
 
         if (naechsteRegion == null) {
             System.out.println("Dorthin gibt es aktuell keine " + transportmittel + "-Verbindung von dieser Region.");
