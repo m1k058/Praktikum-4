@@ -210,23 +210,20 @@ class Spiel
             Raum ankunftsRaum = null;
             String zielRaumName = null;
 
-            if ("Zug".equals(transportmittel)) {
-                ankunftsRaum = aktuelleRegion.gibRaum("Bahnhof"); // Ankunft immer im Raum "Bahnhof"
-            } else if ("Auto".equals(transportmittel)) {
-                ankunftsRaum = aktuelleRegion.gibRaum("Autobahn"); // Ankunft immer im Raum "Autobahn"
+            if (alterRaum.gibKategorie() == Raumkategorie.BAHNHOF) {
+                ankunftsRaum = aktuelleRegion.gibRaum("Bahnhof");
+            } else if (alterRaum.gibKategorie() == Raumkategorie.AUTOBAHN) {
+                ankunftsRaum = aktuelleRegion.gibRaum("Autobahn");
             }
 
             if (ankunftsRaum != null) {
                 aktuellerRaum = ankunftsRaum;
-                System.out.println("Du reist mit dem " + transportmittel + " von " + alteRegion.gibBeschreibung() + " nach " + aktuelleRegion.gibBeschreibung() + "."); //
-                // Die raumInfoAusgeben() wird die Beschreibung des neuen aktuellenRaums anzeigen.
-                spieler.aendereGeld(spieler.gibEinkommen()); //
-                spieler.ausgeben(); //
+                System.out.println("Du reist von " + alteRegion.gibBeschreibung() + " nach " + aktuelleRegion.gibBeschreibung() + ".");
+                spieler.aendereGeld(spieler.gibEinkommen());
+                spieler.ausgeben();
                 raumInfoAusgeben();
             } else {
-                System.err.println("Fehler: Der spezifische Ankunftsraum ('" + zielRaumName + "') für deine Reise mit " + transportmittel +
-                                   " in der Region '" + aktuelleRegion.gibBeschreibung() + "' wurde nicht gefunden, obwohl er existieren sollte."); //
-                System.err.println("Reise fehlgeschlagen. Du bleibst in " + alteRegion.gibBeschreibung() + "."); //
+                System.out.println("Reise fehlgeschlagen. Du bleibst in " + alteRegion.gibBeschreibung() + ".");
                 aktuelleRegion = alteRegion; // Zurück zur alten Region, da Ankunftsort ungültig
             }
         }
