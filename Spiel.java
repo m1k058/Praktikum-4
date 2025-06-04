@@ -131,8 +131,8 @@ class Spiel
                 wechsleRaumInnerhalbRegion(befehl);
                 break;
 
-            case TRAIN:
-                wechsleInAndereRegion(befehl, "Zug");
+            case DRIVE:
+                wechsleInAndereRegion(befehl);
                 break;
 
             case QUIT:
@@ -186,36 +186,24 @@ class Spiel
      * Kommt mit "Zug" im Raum "Bahnhof" der Zielregion an.
      * Kommt mit "Auto" im Raum "Autobahn" der Zielregion an.
      */
-    private void wechsleInAndereRegion(Befehl befehl, String transportmittel) {
+    private void wechsleInAndereRegion(Befehl befehl) {
         if (!(aktuellerRaum instanceof TravelRaum)) {
-            System.out.println("Von hier ("+ aktuellerRaum.gibBeschreibung() +") aus kannst du nicht mit einem " + transportmittel + " reisen."); //
+            System.out.println("Von hier ("+ aktuellerRaum.gibBeschreibung() +") aus kannst du nicht reisen.");
             return;
         }
-        TravelRaum travelRaum = (TravelRaum) aktuellerRaum;
-
-        boolean reiseErlaubt = false;
-        if ("Zug".equals(transportmittel) && travelRaum.zugErlaubt()) { //
-            reiseErlaubt = true;
-        } else if ("Auto".equals(transportmittel) && travelRaum.autoErlaubt()) { //
-            reiseErlaubt = true;
-            // Zukünftig könnte hier ein "AUTO" Befehlswort hinzukommen
-        }
-
-        if (!reiseErlaubt) {
-            System.out.println("Du kannst von hier nicht mit dem " + transportmittel + " fahren (Beförderungsmittel nicht erlaubt).");
-            return;
-        }
+        Raum alterRaum =  aktuellerRaum;
 
         if (!befehl.hatZweitesWort()) { //
-            System.out.println("Wohin möchtest du mit dem " + transportmittel + " fahren?");
+            System.out.println("Wohin möchtest du fahren?");
             System.out.println("Mögliche Regionen:" + aktuelleRegion.gibRegionAusgaengeAlsString()); //
             return;
         }
         Region naechsteRegion = spielumgebung.gibRegion(befehl.gibZweitesWort());
 
         if (naechsteRegion == null) {
-            System.out.println("Dorthin gibt es aktuell keine " + transportmittel + "-Verbindung von dieser Region.");
-        } else {
+            System.out.println("Dorthin gibt es aktuell keine Verbindung von dieser Region.");
+        } 
+        else {
             Region alteRegion = aktuelleRegion;
             aktuelleRegion = naechsteRegion; // Wechsel zur neuen Region
 

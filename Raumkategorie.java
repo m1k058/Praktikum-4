@@ -20,6 +20,8 @@ public enum Raumkategorie
     STRAND("am Strand", 0, 0),
 
     OFFSHORE("am Offshore Baugebiet", 0, 4),
+    
+    BUNDESAMT("im Bundesamt", 0, 0),
 
     AUTOBAHN("auf der Autobahn", 0, 0);
 

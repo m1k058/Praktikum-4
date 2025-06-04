@@ -885,7 +885,8 @@
           "name":"Bahnhof",
           "kategorie":"BAHNHOF",
           "ausgaenge":{
-            "osten":"Marktplatz1",
+            "norden":"Feld6",
+            "osten":"Marktplatz",
             "sueden":"Strand1"
           }
         },
