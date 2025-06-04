@@ -34,7 +34,7 @@ class Spiel
         spieler = new Spieler(5, 0, 100);
         parser = new Parser();
         try {
-            spielumgebung = new Spielumgebung("map_v1.json");
+            spielumgebung = new Spielumgebung("map_v2.json");
         } catch (Exception e) {
             // Fehlerbehandlung wenn die Datei nicht gefunden wird oder fehlerhaft ist
             System.err.println("Kritischer Fehler beim Laden der Spielumgebung: " + e.getMessage());
