@@ -135,7 +135,7 @@
           "ausgaenge": {
             "norden": "Marktplatz1",
             "osten": "Bahnhof",
-            "sueden": "Bauamt"
+            "westen": "Bauamt"
           }
         },
         {
@@ -718,8 +718,8 @@
           }
         },
         {
-          "name": "Bundesamt",
-          "kategorie": "BUNDESAMT",
+          "name": "Bundestag",
+          "kategorie": "BUNDESTAG",
           "ausgaenge": {
             "osten": "Marktplatz3"
           }
@@ -979,6 +979,22 @@
             "norden": "Bauamt",
             "westen": "Strand3"
           }
+        },
+        {
+          "name": "Offshore1",
+          "kategorie": "OFFSHORE",
+          "ausgaenge": {
+            "norden": "Strand1",
+            "osten": "Offshore2"
+          }
+        },
+        {
+          "name": "Offshore2",
+          "kategorie": "OFFSHORE",
+          "ausgaenge": {
+            "norden": "Strand2",
+            "westen": "Offshore1"
+          }
         }
       ]
     },
@@ -1147,6 +1163,20 @@
             "norden": "Bauamt",
             "sueden": "Offshore2",
             "westen": "Strand3"
+          }
+        },
+        {
+          "name": "Offshore1",
+          "kategorie": "OFFSHORE",
+          "ausgaenge": {
+            "norden": "Strand2"
+          }
+        },
+        {
+          "name": "Offshore2",
+          "kategorie": "OFFSHORE",
+          "ausgaenge": {
+            "norden": "Strand4"
           }
         }
       ]

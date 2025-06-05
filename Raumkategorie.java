@@ -21,7 +21,7 @@ public enum Raumkategorie
 
     OFFSHORE("am Offshore Baugebiet", 0, 4),
     
-    BUNDESAMT("im Bundesamt", 0, 0),
+    BUNDESTAG("im Bundestag", 0, 0),
 
     AUTOBAHN("auf der Autobahn", 0, 0);
 

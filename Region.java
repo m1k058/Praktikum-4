@@ -141,6 +141,14 @@ public class Region
     public Region gibAusgangRegion(String richtung) {
         return ausgaenge.get(richtung);
     }
+
+    /**
+     * Gibt die HashMap aller Räume in dieser Region zurück
+     * @return Eine HashMap, die Raum-Objekte enthält
+     */
+    public HashMap<String, Raum> gibRaeumeMap() {
+        return this.raeume;
+    }
     
     /**
      * @return die kurze Beschreibung dieser Region (die dem Konstruktor
