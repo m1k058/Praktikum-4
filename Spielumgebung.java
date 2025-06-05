@@ -74,7 +74,13 @@ public class Spielumgebung
                 JSONObject raumJSON = (JSONObject) ro;
                 String raumName = (String) raumJSON.get("name");
                 Raum raum = region.gibRaum(raumName);
-
+                if(raum.gibKategorie() == Raumkategorie.BAUAMT){
+                    raum.gibInventar().addItem("Baugenehmigung");
+                }
+                if(raum.gibKategorie() == Raumkategorie.BUNDESAMT){
+                    raum.gibInventar().addItemAnzahl("Baugenehmigung", 5);
+                }
+                
                 JSONObject raumAusgaengeJSON = (JSONObject) raumJSON.get("ausgaenge");
                 if (raumAusgaengeJSON != null) {
                     for (Object key : raumAusgaengeJSON.keySet()) {
@@ -89,6 +95,14 @@ public class Spielumgebung
 
         
 
+    }
+    
+     /**
+     * Gibt die HashMap aller Regionen in der Spielumgebung zurück
+     * @return Eine HashMap, die Region-Objekte enthält
+     */
+    public HashMap<String, Region> gibRegionenMap() {
+        return this.regionen;
     }
 
     /**

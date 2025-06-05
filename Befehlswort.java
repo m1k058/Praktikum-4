@@ -10,7 +10,7 @@ public enum Befehlswort
 {
     // Ein Wert für jedes Befehlswort, plus eines für nicht
     // erkannte Befehle
-    GO("gehe"),DRIVE("fahre"), QUIT("verlassen"), HELP("hilfe"), BUILD("baue"), UNKNOWN("?");
+    GO("gehe"),DRIVE("fahre"), QUIT("verlassen"), HELP("hilfe"), BUILD("baue"), PICKUP("nehme"), UNKNOWN("?");
     
     // Das Befehlswort als Zeichenkette.
     private String befehlswort;

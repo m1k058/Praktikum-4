@@ -7,11 +7,8 @@
  */
 
 public enum ItemTyp {
-    APFEL("Apfel", "Ein saftiger, roter Apfel."),
-    SCHWERT("Schwert", "Eine scharfe, verlässliche Klinge."),
-    KARTE("Karte", "Zeigt die nähere Umgebung."),
-    MUENZE("Münze", "Ein Plätchen aus einer Nickel-Messing-Legierung."),
-    HEILTRANK("Heiltrank", "Stellt einen Teil der Lebenspunkte wieder her.");
+    BAUGENEHMIGUNG("Baugenehmigung", "Dieses Stück Papier darf nur per Fax versendet werden"),
+    MUENZE("Münze", "Ein Plätchen aus einer Nickel-Messing-Legierung.");
 
     private final String anzeigename;
     private final String beschreibung;

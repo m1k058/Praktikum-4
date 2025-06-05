@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 /**
  *  Dies ist die Hauptklasse der Anwendung "Die Welt von Zuul".
  *  "Die Welt von Zuul" ist ein sehr einfaches, textbasiertes
@@ -21,11 +23,14 @@ class Spiel
 {
     private Parser parser;
     private Spieler spieler;
-    
+
     private Spielumgebung spielumgebung;
     private Region aktuelleRegion;
     private Raum aktuellerRaum;
-    
+
+    private int gesamtSolaranlagen;
+    private int gesamtWindanlagen;
+
     private int einkommenMultiplikator;
     private int punkte;
 
@@ -39,14 +44,15 @@ class Spiel
         try {
             spielumgebung = new Spielumgebung("map_v2.json");
         } catch (Exception e) {
-            // Fehlerbehandlung wenn die Datei nicht gefunden wird oder fehlerhaft ist
             System.err.println("Kritischer Fehler beim Laden der Spielumgebung: " + e.getMessage());
             System.err.println("Das Spiel kann nicht gestartet werden. Bitte überprüfe die Datei 'map_v1.json'.");
         }
         aktuelleRegion = spielumgebung.gibRegion("Voltavia");
         aktuellerRaum = aktuelleRegion.gibRaum("Bahnhof");
-        
+
         einkommenMultiplikator = 1;
+        gesamtSolaranlagen = 0;
+        gesamtWindanlagen = 0;
         punkte = 0;
     }
 
@@ -82,7 +88,7 @@ class Spiel
         System.out.println();
         raumInfoAusgeben();
     }
-    
+
     /**
      * Gibt die Informationen über den aktuellen Raum und die aktuelle Region aus.
      */
@@ -93,18 +99,18 @@ class Spiel
         System.out.println("Punkte: " + punkte);
         System.out.println();
         System.out.println("Du befindest dich " + aktuellerRaum.gibBeschreibung() + 
-                           " in der Region '" + aktuelleRegion.gibBeschreibung() + "'."); 
+            " in der Region '" + aktuelleRegion.gibBeschreibung() + "'."); 
         System.out.println(aktuellerRaum.gibRaumInfoString());
 
         // Zeige Regionsausgänge nur, wenn der Raum ein TravelRaum ist
         if (aktuellerRaum instanceof TravelRaum) {
             if (aktuellerRaum.gibKategorie() == Raumkategorie.BAHNHOF) { //
                 System.out.println("Von dieser Region '" + aktuelleRegion.gibBeschreibung() +
-                "' kannst du reisen nach:" + aktuelleRegion.gibRegionAusgaengeZugAlsString());
+                    "' kannst du reisen nach:" + aktuelleRegion.gibRegionAusgaengeZugAlsString());
             }
             else{
                 System.out.println("Von dieser Region '" + aktuelleRegion.gibBeschreibung() +
-                "' kannst du reisen nach:" + aktuelleRegion.gibRegionAusgaengeAutoAlsString());
+                    "' kannst du reisen nach:" + aktuelleRegion.gibRegionAusgaengeAutoAlsString());
             }
         }
         // Wenn aktuellerRaum ein BauRaum ist, zeige gebaute Anlagen
@@ -149,6 +155,10 @@ class Spiel
             case BUILD:
                 baueAnlage(befehl);
                 break;
+
+            case PICKUP:
+
+                break;
         }
         // ansonsten: Befehl nicht erkannt.
         return moechteBeenden;
@@ -167,7 +177,7 @@ class Spiel
         parser.zeigeBefehle();
     }
 
-     /**
+    /**
      * Versuche, innerhalb der aktuellen Region in einen anderen Raum zu gehen.
      */
     private void wechsleRaumInnerhalbRegion(Befehl befehl) {
@@ -185,7 +195,7 @@ class Spiel
             raumInfoAusgeben();
         }
     }
-    
+
     /**
      * Versuche, mit einem Transportmittel in eine andere Region zu wechseln.
      * Kommt mit "Zug" im Raum "Bahnhof" der Zielregion an.
@@ -198,7 +208,7 @@ class Spiel
             return;
         }
         Raum alterRaum =  aktuellerRaum;
-        
+
         // Gibt die entsprechenden ausgängeg der Region für Bahnhof oder Autobahn aus falls kein Ziel vorhanden war
         if (!befehl.hatZweitesWort()) { //
             System.out.println("Wohin möchtest du fahren?");
@@ -210,10 +220,10 @@ class Spiel
             }
         }
         Region naechsteRegion = spielumgebung.gibRegion(befehl.gibZweitesWort());
-        
+
         if(naechsteRegion != null){
             Raum ankunftsRaum = null;
-        
+
             // Prüfen ob die Zielregion ein Bahnhof/eine Autobahn hat
             if (alterRaum.gibKategorie() == Raumkategorie.BAHNHOF && aktuelleRegion.istZugAusgang(naechsteRegion.gibBeschreibung())) {
                 ankunftsRaum = naechsteRegion.gibRaum("Bahnhof");
@@ -224,7 +234,7 @@ class Spiel
 
             Region alteRegion = aktuelleRegion;
             aktuelleRegion = naechsteRegion; // Wechsel zur neuen Region
-        
+
             if (ankunftsRaum != null) {
                 aktuellerRaum = ankunftsRaum;
                 System.out.println("Du reist von " + alteRegion.gibBeschreibung() + " nach " + aktuelleRegion.gibBeschreibung() + ".");
@@ -239,7 +249,7 @@ class Spiel
         else{
             System.out.println("Diese Region ist ungueltig!");
         }
-                
+
     }
 
     private void baueAnlage(Befehl befehl) { 
@@ -255,7 +265,7 @@ class Spiel
             return;
         }
         String anlagenArt = befehl.gibZweitesWort(); 
-        
+
         int kosten = 0;
         int einkommenPlus = 0;
         boolean erfolgreich = false;
@@ -276,7 +286,7 @@ class Spiel
         } else if (anlagenArt.equals("wind")) {
             kosten = 2;
             einkommenPlus = 1;
-             if (spieler.gibGeld() >= kosten) { //
+            if (spieler.gibGeld() >= kosten) { //
                 if (bauRaum.bauWind()) { //
                     System.out.println("Eine Windkraftanlage wurde " + bauRaum.gibBeschreibung() + " gebaut.");
                     erfolgreich = true;
@@ -296,8 +306,49 @@ class Spiel
             System.out.println("Du erhältst nun " + einkommenPlus + " zusätzliche Münze(n) pro Bahnfahrt.");
             raumInfoAusgeben();
         }
+        aktualisierePunkte();
     }
 
+    /**
+     * Aktualisiert die Punkte Anzahl und prüfe 
+     * die Gewinnbedingung.
+     *´
+     */
+    private void aktualisierePunkte()
+    {
+        gesamtSolaranlagen = 0;
+        gesamtWindanlagen = 0;
+        HashMap<String, Region> regionenMap = spielumgebung.gibRegionenMap();
+        // Iteriere über alle Region-Objekte in der Map
+        for (Region region : regionenMap.values()) {
+            HashMap<String, Raum> raeumeMap = region.gibRaeumeMap();
+            // Iteriere über alle Raum-Objekte in der Map
+            for (Raum raum : raeumeMap.values()) {
+                // Prüfe, ob der Raum ein BauRaum ist
+                if (raum instanceof BauRaum) {
+                    BauRaum bauRaum = (BauRaum) raum;
+                    gesamtSolaranlagen += bauRaum.gibAnlagenSolar();
+                    gesamtWindanlagen += bauRaum.gibAnlagenWind();
+                }
+            }
+        }
+
+        punkte = (gesamtSolaranlagen * 10) + (gesamtWindanlagen * 5);
+    }
+
+    /**
+     * Hebt ein Item auf
+     *
+     * @param  befehl für das zweite Befehlswort
+     * @return    the sum of x and y
+     */
+    public void itemAufheben(Befehl befehl)
+    {
+        String item = befehl.gibZweitesWort();
+        
+    }
+
+    
     /**
      * "quit" wurde eingegeben. Ãœberpruefe den Rest des Befehls,
      * ob das Spiel wirklich beendet werden soll.

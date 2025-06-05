@@ -135,7 +135,7 @@
           "ausgaenge": {
             "norden": "Marktplatz1",
             "osten": "Bahnhof",
-            "sueden": "Bauamt"
+            "westen": "Bauamt"
           }
         },
         {

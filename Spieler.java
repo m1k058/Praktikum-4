@@ -35,7 +35,7 @@ public class Spieler
             spielerInventar.addItemAnzahl("Münze", aenderung);
         }
         else if (aenderung<0){
-            spielerInventar.removeItemAnzahl("Münze", aenderung);
+            spielerInventar.removeItemAnzahl("Münze", -aenderung);
         }
     }
 }
