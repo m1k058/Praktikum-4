@@ -32,7 +32,8 @@ public enum Raumkategorie
 
     /**
      * Initialisieren mit der entsprechenden Raumkategorie.
-     * @param kategorie des Raums als Zeichenkette.
+     * @param kategorie des Raums als Zeichenkette und anzahl der plazierbaren
+     * Solar und Windanlagen.
      */
     Raumkategorie(String kategorie, int solar, int wind)
     {
