@@ -1,6 +1,6 @@
+import java.util.HashMap;
 import java.util.Set;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Diese Klasse modelliert Räume im Neualand.
@@ -8,30 +8,26 @@ import java.util.Iterator;
  * Ein "Raum" repräsentiert einen Ort in der virtuellen Landschaft des
  * Spiels. Ein Raum ist mit anderen Räumen über Ausgänge verbunden.
  * Für jeden existierenden Ausgang hält ein Raum eine Referenz auf 
- * den benachbarten Raum.
+ * den benachbarten Raum. Jeder Raum ist einer bestimmten Kategorie und
+ * hat ensprechend bestimmte nutzbare Methoden
  * 
- * @author  Michael Kölling, David J. Barnes, Michal Kos und Cedric Wilke
- * @version 21.05.2025
+ * @author  Michal Kos und Cedric Wilke
+ * @version 23.05.2025
  */
 
 class Raum 
 {
-    private String beschreibung;
-    private boolean bebaubar;
-    private boolean bebaut;
+    private Raumkategorie kategorie;
     private HashMap<String, Raum> ausgaenge;        // die Ausgänge dieses Raums
 
     /**
-     * Erzeuge einen Raum mit einer Beschreibung. Ein Raum
+     * Erzeuge einen Raum  einer Kategorie. Ein Raum
      * hat anfangs keine Ausgänge.
-     * @param beschreibung enthält eine Beschreibung in der Form
-     *        "in einer Küche" oder "auf einem Sportplatz".
+     * @param kategorie des Raumes.
      */
-    public Raum(String beschreibung, boolean bebaubar, boolean bebaut) 
+    public Raum(Raumkategorie kategorie) 
     {
-        this.beschreibung = beschreibung;
-        this.bebaubar = bebaubar;
-        this.bebaut = bebaut;
+        this.kategorie = kategorie;
         ausgaenge = new HashMap<String, Raum>();
     }
 
@@ -40,71 +36,62 @@ class Raum
      * @param richtung die Richtung, in der der Ausgang liegen soll
      * @param nachbar der Raum, der über diesen Ausgang erreicht wird
      */
-    public void setzeAusgang(String richtung, Raum nachbar) 
+    public void setzeAusgangRaum(String richtung, Raum nachbar) 
     {
         ausgaenge.put(richtung, nachbar);
     }
 
     /**
-     * @return die kurze Beschreibung dieses Raums (die dem Konstruktor
-     * übergeben wurde).
-     */
-    public String gibBeschreibungRaum()
-    {
-        return beschreibung;
-    }
-
-    /**
-     * @return die Information dieses Raums, ob er bebaut ist oder nicht (wurde im Konstruktor
-     * ï¿½bergeben).
-     */
-    public boolean gibBebaut()
-    {
-        return bebaut;
-    }
-    
-    /**
-     * @return die Information dieses Raums, ob er bebaubar ist oder nicht (wurde im Konstruktor
-     * ï¿½bergeben).
-     */
-    public boolean gibBebaubar()
-    {
-        return bebaubar;
-    }
-    
-    /**
-     * Ändere den Zustand des Feldes.
-     */
-    public void setzeBebaut(boolean bebaut)
-    {
-        this.bebaut = bebaut;
-    }
-    
-    /**
-     * Liefere eine Zeichenkette, die die Ausgänge dieses Raums
+     * Liefere eine Zeichenkette, die die Ausgänge dieses Raumes
      * beschreibt, beispielsweise
      * "Ausgänge: north west".
      * @return eine Beschreibung der Ausgänge dieses Raumes.
      */
-    public String gibAusgaengeAlsString()
+    public String gibRaumAusgaengeAlsString()
     {
-        String ergebnis = "";
+        String ergebnis = "Ausgaenge: ";
         Set<String> keys = ausgaenge.keySet();
-        for(String ausgang : keys)
+        boolean ersterAusgang = true;
+        for(String ausgang : keys){            
+            if (ersterAusgang) {
             ergebnis += " " + ausgang;
+            ersterAusgang = false;
+            } else {
+            ergebnis += ", " + ausgang;
+            }
+        }
         return ergebnis;
+    }
+    
+    /**
+     * Liefere den Raum, der in die angegebene Richtung liegt.
+     * Liefere null, wenn in dieser Richtung kein Ausgang ist.
+     * @param richtung Die Richtung des Ausgangs.
+     * @return Den Raum in der angegebenen Richtung oder null.
+     */
+    public Raum gibAusgangRaum(String richtung) {
+        return ausgaenge.get(richtung);
     }
 
     /**
-     * Liefere den Raum, den wir erreichen, wenn wir aus diesem Raum
-     * in die angegebene Richtung gehen. Liefere 'null', wenn in
-     * dieser Richtung kein Ausgang ist.
-     * @param richtung die Richtung, in die gegangen werden soll.
-     * @return den Raum in der angegebenen Richtung.
+     * Liefere eine Zeichenkette mit der Beschreibung
+     * für disesn Raum
+     *
+     * @return    eine Bschreibung des Raumes
      */
-    public Raum gibAusgang(String richtung) 
+    public String gibBeschreibung()
     {
-        return ausgaenge.get(richtung);
+        return kategorie.gibBeschreibung();
     }
-}
 
+    /**
+     * Gibt die kategorie des Raums zurück
+     *
+     * @return    Raumkategorie kategorie
+     */
+    public Raumkategorie gibKategorie()
+    {
+        return kategorie;
+    }
+
+}

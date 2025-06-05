@@ -1,8 +1,9 @@
 import java.util.HashMap;
 import java.util.Set;
 
+
 /**
- * Das ist eine Region. Sie besteht aus mehreren Räumen. Es gibt immer einen Raum in der Region von
+ * Das ist eine Region. Sie besteht aus mehreren Raeumen. Es gibt immer einen Raum in der Region von
  * dem man in eine andere Region reisen kann.
  *
  * @author Michal Kos
@@ -11,185 +12,142 @@ import java.util.Set;
 public class Region
 {
     private String beschreibung;
-    private HashMap<String, Region> ausgaenge;        // die Ausgänge dieser Region
-    private Raum aktuellerRaum;
-    private Raum bahnhofCheck;
-    private Raum feldCheck;
+    private HashMap<String, Region> ausgaenge;        // die Ausgaenge dieser Region
+    private HashMap<String, Raum> raeume; 
 
     /**
      * Erzeuge eine Region mit einer Beschreibung. Eine Region
-     * hat anfangs keine Ausgänge.
-     * @param beschreibung enthält eine Beschreibung in der Form
-     *        "in einer Küche" oder "auf einem Sportplatz".
+     * hat anfangs keine Ausgaenge und Raeume.
+     *  
+     * @param beschreibung enthaelt eine Beschreibung in der Form
+     *        "in Hamburg" oder "an der Küste".
      */
-    public Region(String beschreibung) 
+    public Region(String beschreibung, HashMap<String, Raum> raeume) 
     {
-        this.beschreibung = beschreibung;
+        this.beschreibung = beschreibung;        
+        this.raeume = raeume;
         ausgaenge = new HashMap<String, Region>();
-        raeumeAnlegen();
     }
-    
+
     /**
-     * Erzeuge alle Räume und verbinde ihre Ausgänge miteinander.
-     */
-    private void raeumeAnlegen()
-    {
-        Raum bahnhof, marktplatz, regionkanzlei, autobahn, feld;
-      
-        // die Räume erzeugen
-        bahnhof = new Raum("am Hauptbahnhof", false, false);
-        marktplatz = new Raum("am Marktplatz", false, false);
-        regionkanzlei = new Raum("in der Regionkanzlei", false, false);
-        autobahn = new Raum("auf der Autobahn", false, false);
-        feld = new Raum("auf einem Feld", true, false);
-        
-        // die Ausgänge initialisieren
-        marktplatz.setzeAusgang("oben", regionkanzlei);
-        marktplatz.setzeAusgang("rechts", bahnhof);
-        marktplatz.setzeAusgang("unten", autobahn);
-
-        regionkanzlei.setzeAusgang("unten", marktplatz);
-
-        bahnhof.setzeAusgang("links", marktplatz);
-
-        autobahn.setzeAusgang("oben", marktplatz);
-        autobahn.setzeAusgang("unten", feld);
-
-        feld.setzeAusgang("oben", autobahn);
-        
-        bahnhofCheck = bahnhof;     // zum vergleich       
-        feldCheck = feld;           // zum vergleich   
-        aktuellerRaum = bahnhof;    // das Spiel startet am Bahnhof
-    }
-    
-    /**
-     * Versuche, in eine Richtung zu gehen. Wenn es einen Ausgang gibt,
-     * wechsele in den neuen Raum, ansonsten gib eine Fehlermeldung
+     * Gibt eine Referenz auf den Raum mit dem ensprechenden Namen
      * aus.
+     *
+     * @param  Name des Raumes
+     * @return    Referenz auf den Raum
      */
-    public boolean wechsleRaum(Befehl befehl) 
-    {
-        if(!befehl.hatZweitesWort()) {
-            // Gibt es kein zweites Wort, wissen wir nicht, wohin...
-            System.out.println("Wohin möchten Sie gehen?");
-            return false;
-        }
-
-        String richtung = befehl.gibZweitesWort();
-
-        // Wir versuchen, den Raum zu verlassen.
-        Raum naechsterRaum = aktuellerRaum.gibAusgang(richtung);
-
-        if (naechsterRaum == null) {
-            System.out.println("Dort ist keine Tür!");
-            return false;
-        }
-        else {
-            aktuellerRaum = naechsterRaum;
-            System.out.println(gibLangeBeschreibung());
-            return true;
-        }
+    public Raum gibRaum(String raumName) {
+        return raeume.get(raumName);
     }
-    
+
     /**
      * Definiere einen Ausgang für diese Region.
      * @param richtung die Richtung, in der der Ausgang liegen soll
      * @param nachbar der Region, der über diesen Ausgang erreicht wird
      */
-    public void setzeAusgang(String richtung, Region nachbar) 
+    public void setzeAusgangRegion(String richtung, Region nachbar)
     {
         ausgaenge.put(richtung, nachbar);
     }
 
     /**
-     * @return die kurze Beschreibung dieser Region (die dem Konstruktor
-     * übergeben wurde).
-     */
-    public String gibBeschreibung()
-    {
-        return beschreibung;
-    }
-    
-    /**
-     * @return die kurze Beschreibung dieser Region (die dem Konstruktor
-     * übergeben wurde).
-     */
-    public Raum gibAktuellerRaum()
-    {
-        return aktuellerRaum;
-    }
-
-    /**
-     * Liefere eine lange Beschreibung diese Region, in der Form:
-     *     Sie sind in der Küche der Region Hamburg.
-     *     Ausgänge: nord west
-     * @return eine lange Beschreibung dieser Region.
-     */
-    public String gibLangeBeschreibung()
-    {
-        return "Sie sind " + aktuellerRaum.gibBeschreibungRaum() + gibBeschreibung() + ".\n" + gibAusgaengeAlsStringRaum();
-    }
-
-    /**
      * Liefere eine Zeichenkette, die die Ausgänge dieser Region
-     * beschreibt, beispielsweise
-     * "Ausgänge: north west".
-     * @return eine Beschreibung der Ausgänge dieser Region.
+     * die mit dem Zug errecihbar sind
+     * @return eine Beschreibung der Ausgänge dieses Raumes.
      */
-    private String gibAusgaengeAlsStringRaum()
+    public String gibRegionAusgaengeZugAlsString()
     {
-        String ergebnis = "Ausgänge:" + aktuellerRaum.gibAusgaengeAlsString();
-        if(amBahnhof())
-        {
-        ergebnis += gibAusgaengeAlsString();
+        String ergebnis = "";
+        Set<String> keys = ausgaenge.keySet();
+        boolean ersterAusgang = true;
+        for(String ausgang : keys){ 
+            if(istZugAusgang(ausgang)){
+                if (ersterAusgang) {
+                    ergebnis += " " + ausgang;
+                    ersterAusgang = false;
+                } 
+                else {
+                    ergebnis += ", " + ausgang;
+                }
+            }
         }
         return ergebnis;
     }
     
     /**
      * Liefere eine Zeichenkette, die die Ausgänge dieser Region
-     * beschreibt, beispielsweise
-     * "Ausgänge: north west".
-     * @return eine Beschreibung der Ausgänge dieser Region.
+     * die mit dem Auto errecihbar sind
+     * @return eine Beschreibung der Ausgänge dieses Raumes.
      */
-    private String gibAusgaengeAlsString()
+    public String gibRegionAusgaengeAutoAlsString()
     {
-        String ergebnis = "\nOder fahren sie mit dem Zug nach:";
+        String ergebnis = "";
         Set<String> keys = ausgaenge.keySet();
-        for(String ausgang : keys)
-            ergebnis += " " + ausgang;
+        boolean ersterAusgang = true;
+        for(String ausgang : keys){ 
+            if(istAutoAusgang(ausgang)){
+                if (ersterAusgang) {
+                    ergebnis += " " + ausgang;
+                    ersterAusgang = false;
+                } 
+                else {
+                    ergebnis += ", " + ausgang;
+                }
+            }
+        }
         return ergebnis;
     }
 
     /**
+     * Prüft, ob die angegebene Zielregion
+     * über einen Bahnhof verfügt und somit per Zug erreichbar ist.
+     *
+     * @param zielRegionName Der Name des Ausgangs zur Zielregion.
+     * @return true, wenn die Zielregion über diesen Ausgang per Zug erreichbar ist.
+     */
+    public boolean istZugAusgang(String zielRegionName) 
+    {
+        Region zielRegion = ausgaenge.get(zielRegionName); // verbundene Region
+        if (zielRegion != null) {
+            Raum ankunftsBahnhof = zielRegion.gibRaum("Bahnhof"); // Sucht Raum "Bahnhof" in der Region
+            return ankunftsBahnhof != null && ankunftsBahnhof.gibKategorie() == Raumkategorie.BAHNHOF;
+        }
+        return false;
+    }
+    
+    /**
+     * Prüft, ob die angegebene Zielregion
+     * über eine Autobahn verfügt und somit per Auto erreichbar ist.
+     *
+     * @param zielRegionName Der Name des Ausgangs zur Zielregion.
+     * @return true, wenn die Zielregion über diesen Ausgang per Auto erreichbar ist.
+     */
+    public boolean istAutoAusgang(String zielRegionName) {
+        Region zielRegion = ausgaenge.get(zielRegionName); // verbundene Region
+        if (zielRegion != null) {
+            Raum ankunftsAutobahn = zielRegion.gibRaum("Autobahn"); // Sucht Raum "Autobahn" in der Region
+            return ankunftsAutobahn != null && ankunftsAutobahn.gibKategorie() == Raumkategorie.AUTOBAHN;
+        }
+        return false;
+    }
+    
+     /**
      * Liefere die Region, die wir erreichen, wenn wir aus dieser Region
      * in die angegebene Richtung gehen. Liefere 'null', wenn in
      * dieser Richtung kein Ausgang ist.
      * @param richtung die Richtung, in die gegangen werden soll.
-     * @return die Region in der angegebenen Richtung.
+     * @return die Region in der angegebenen Richtung oder null.
      */
-    public Region gibAusgang(String richtung) 
-    {
+    public Region gibAusgangRegion(String richtung) {
         return ausgaenge.get(richtung);
     }
     
-    public boolean amBahnhof()
+    /**
+     * @return die kurze Beschreibung dieser Region (die dem Konstruktor
+     * uebergeben wurde).
+     */
+    public String gibBeschreibung()
     {
-        if (aktuellerRaum == bahnhofCheck){
-            return true;
-        }
-        else{
-        return false;
-        }
-    }
-    
-    public boolean amFeld()
-    {
-        if (aktuellerRaum == feldCheck){
-            return true;
-        }
-        else{
-        return false;
-        }
+        return beschreibung;
     }
 }
