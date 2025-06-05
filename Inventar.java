@@ -27,13 +27,13 @@ public class Inventar {
      *
      * @param typ Der hinzuzufügende ItemTyp. Wenn null, geschieht nichts.
      */
-    public void addItem(String typ) {
-        ItemTyp item = findeItemTyp(typ);
-        if (typ == null) {
+    public void addItem(String typName) {
+        ItemTyp item = findeItemTyp(typName);
+        if (item == null) {
             return;
         }
-        if (this.itemAnzahl.containsKey(typ)) {
-            int aktuelleAnzahl = this.itemAnzahl.get(typ);
+        if (this.itemAnzahl.containsKey(item)) {
+            int aktuelleAnzahl = this.itemAnzahl.get(item);
             this.itemAnzahl.put(item, aktuelleAnzahl + 1);
         } else {
             this.itemAnzahl.put(item, 1);
@@ -46,13 +46,13 @@ public class Inventar {
      * @param typ Der hinzuzufügende ItemTyp. Wenn null, geschieht nichts
      * anzahl Die Anzahl an Items die hinzugefügt werden soll
      */
-    public void addItemAnzahl(String typ, int anzahl) {
-        ItemTyp item = findeItemTyp(typ);
-        if (typ == null) {
+    public void addItemAnzahl(String typName, int anzahl) {
+        ItemTyp item = findeItemTyp(typName);
+        if (item == null) {
             return;
         }
-        if (this.itemAnzahl.containsKey(typ)) {
-            int aktuelleAnzahl = this.itemAnzahl.get(typ);
+        if (this.itemAnzahl.containsKey(item)) {
+            int aktuelleAnzahl = this.itemAnzahl.get(item);
             this.itemAnzahl.put(item, aktuelleAnzahl + anzahl);
         } else {
             this.itemAnzahl.put(item, anzahl);
@@ -68,17 +68,17 @@ public class Inventar {
      * @return  true wenn ein Exemplar des Typs erfolgreich entfernt wurde
      *  false wenn der Typ nicht im Inventar vorhanden war
      */
-    public boolean removeItem(String typ) {
-        ItemTyp item = findeItemTyp(typ);
-        if (typ == null || !this.itemAnzahl.containsKey(typ)) {
+    public boolean removeItem(String typName) {
+        ItemTyp item = findeItemTyp(typName);
+        if (item == null || !this.itemAnzahl.containsKey(item)) {
             return false;
         }
 
-        int aktuelleAnzahl = this.itemAnzahl.get(typ);
+        int aktuelleAnzahl = this.itemAnzahl.get(item);
         if (aktuelleAnzahl > 1) {
             this.itemAnzahl.put(item, aktuelleAnzahl - 1);
         } else {
-            this.itemAnzahl.remove(typ);
+            this.itemAnzahl.remove(item);
         }
         return true;
     }
@@ -92,17 +92,17 @@ public class Inventar {
      * @return  true wenn ein Exemplar des Typs erfolgreich entfernt wurde
      *  false wenn der Typ nicht im Inventar vorhanden war
      */
-    public boolean removeItemAnzahl(String typ, int anzahl) {
-        ItemTyp item = findeItemTyp(typ);
-        if (typ == null || !this.itemAnzahl.containsKey(typ)) {
+    public boolean removeItemAnzahl(String typName, int anzahl) {
+        ItemTyp item = findeItemTyp(typName);
+        if (item == null || !this.itemAnzahl.containsKey(item)) {
             return false;
         }
 
-        int aktuelleAnzahl = this.itemAnzahl.get(typ);
+        int aktuelleAnzahl = this.itemAnzahl.get(item);
         if (aktuelleAnzahl > anzahl) {
             this.itemAnzahl.put(item, aktuelleAnzahl - anzahl);
         } else {
-            this.itemAnzahl.remove(typ);
+            this.itemAnzahl.remove(item);
         }
         return true;
     }
@@ -113,14 +113,14 @@ public class Inventar {
      * @param typ Der ItemTyp, dessen Anzahl ermittelt werden soll
      * @return Die Anzahl der Items dieses Typs. Gibt 0 zurück, wenn nicht im Inventar
      */
-     public int gibAnzahlItems(String typ) {
-         ItemTyp item = findeItemTyp(typ);
-         if (typ == null) {
+     public int gibAnzahlItems(String typName) {
+         ItemTyp item = findeItemTyp(typName);
+         if (item == null) {
              return 0;
          }
 
-         if (this.itemAnzahl.containsKey(typ)) {
-             return this.itemAnzahl.get(typ);
+         if (this.itemAnzahl.containsKey(item)) {
+             return this.itemAnzahl.get(item);
          } else {
               return 0;
          }
@@ -166,12 +166,13 @@ public class Inventar {
      * @param zuInventar Das Inventar, zu dem das Item hinzugefügt werden soll
      * @return true, wenn das Item erfolgreich verschoben wurde, sonst false
      */
-    public static boolean bewegeItem(String typ, Inventar vonInventar, Inventar zuInventar) {
-        if (typ == null || vonInventar == null || zuInventar == null) {
+    public static boolean bewegeItem(String typName, Inventar vonInventar, Inventar zuInventar) {
+         ItemTyp item = findeItemTyp(typName);
+        if (item == null || vonInventar == null || zuInventar == null) {
             return false;
         }
-        if (vonInventar.removeItem(typ)) {
-            zuInventar.addItem(typ);
+        if (vonInventar.removeItem(typName)) {
+            zuInventar.addItem(typName);
             return true;
         }
         return false;

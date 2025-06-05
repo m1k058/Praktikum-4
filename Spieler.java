@@ -15,7 +15,7 @@ public class Spieler
     public Spieler(int startGeld)
     {
         spielerInventar = new Inventar();
-        spielerInventar.addItemAnzahl("MUENZE", startGeld);
+        spielerInventar.addItemAnzahl("Münze", startGeld);
     }
 
     /**
@@ -23,7 +23,7 @@ public class Spieler
      */
     public int gibGeld()
     {
-        return spielerInventar.gibAnzahlItems("MUENZE");
+        return spielerInventar.gibAnzahlItems("Münze");
     }
     
     /**
@@ -32,10 +32,10 @@ public class Spieler
     public void aendereGeld(int aenderung)
     {
         if(aenderung>0){
-            spielerInventar.addItemAnzahl("MUENZE", aenderung);
+            spielerInventar.addItemAnzahl("Münze", aenderung);
         }
         else if (aenderung<0){
-            spielerInventar.removeItemAnzahl("MUENZE", aenderung);
+            spielerInventar.removeItemAnzahl("Münze", aenderung);
         }
     }
 }
