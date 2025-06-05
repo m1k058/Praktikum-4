@@ -27,14 +27,6 @@ public class Spieler
     }
     
     /**
-     * Gib Anzahl der gebauten Anlagen des Spielers zur�ck.
-     */
-    public int gibGebauteAnlagen()
-    {
-        return this.gebauteAnlagen;
-    }
-    
-    /**
      * �ndere Geld des Spielers.
      */
     public void aendereGeld(int aenderung)
