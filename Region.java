@@ -6,8 +6,8 @@ import java.util.Set;
  * Das ist eine Region. Sie besteht aus mehreren Raeumen. Es gibt immer einen Raum in der Region von
  * dem man in eine andere Region reisen kann.
  *
- * @author Michal Kos
- * @version 0.1
+ * @author  Michal Kos und Cedric Wilke
+ * @version 04.06.2025
  */
 public class Region
 {

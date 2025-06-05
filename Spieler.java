@@ -1,16 +1,20 @@
 
 /**
- * Beschreiben Sie hier die Klasse Spieler.
- * 
- * @author (Cedric) 
- * @version (2.0)
+ * Repräsentiert einen Spieler im Spiel "Rette das Neuland".
+ * Ein Spieler verfügt über ein Inventar, in dem Gegenstände und auch
+ * die aktuelle Geldmenge des Spielers verwaltet werden.
+ * @author Cedric Wilke, Michal Kos 
+ * @version 04.06.2025
  */
 public class Spieler
 {
     private Inventar spielerInventar;
 
     /**
-     * Konstruktor fï¿½r Objekte der Klasse Spieler
+     * Erzeugt einen neuen Spieler und initialisiert sein Inventar.
+     * Der Spieler startet mit einem festgelegten Geldbetrag.
+     * * @param startGeld Der Geldbetrag, mit dem der Spieler das Spiel beginnt.
+     * Dieser Betrag wird als "Münze"-Items im Inventar gespeichert.
      */
     public Spieler(int startGeld)
     {
@@ -19,7 +23,9 @@ public class Spieler
     }
 
     /**
-     * Gib Geld des Spielers zurï¿½ck.
+     * Gibt die aktuelle Geldmenge des Spielers zurück.
+     * * @return Die Anzahl der "Münze"-Items im Inventar des Spielers,
+     * was dem Geldbetrag entspricht.
      */
     public int gibGeld()
     {
@@ -27,16 +33,20 @@ public class Spieler
     }
     
     /**
-     * Getter für das Spieler Inventar
+     * Gibt das Inventar des Spielers zurück.
+     * Das Inventar enthält alle Gegenstände und die Münzen des Spielers.
      *
-     * @return das Inventar
+     * @return Das Inventar-Objekt des Spielers.
      */
     public Inventar gibSpielerInventar() { 
         return spielerInventar;
     }
     
     /**
-     * ï¿½ndere Geld des Spielers.
+     * Ändert die Geldmenge des Spielers um den angegebenen Betrag.
+     * Eine positive Änderung erhöht das Geld, eine negative verringert es.
+     * * @param aenderung Der Betrag, um den das Geld geändert werden soll.
+     * Kann positiv (Geld erhalten) oder negativ (Geld ausgeben) sein.
      */
     public void aendereGeld(int aenderung)
     {
