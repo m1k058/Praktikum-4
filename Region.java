@@ -52,26 +52,85 @@ public class Region
 
     /**
      * Liefere eine Zeichenkette, die die Ausgänge dieser Region
-     * beschreibt, beispielsweise
-     * "Reise nach: north west".
+     * die mit dem Zug errecihbar sind
      * @return eine Beschreibung der Ausgänge dieses Raumes.
      */
-    public String gibRegionAusgaengeAlsString()
+    public String gibRegionAusgaengeZugAlsString()
     {
         String ergebnis = "";
         Set<String> keys = ausgaenge.keySet();
         boolean ersterAusgang = true;
-        for(String ausgang : keys){            
-            if (ersterAusgang) {
-            ergebnis += " " + ausgang;
-            ersterAusgang = false;
-            } else {
-            ergebnis += ", " + ausgang;
+        for(String ausgang : keys){ 
+            if(istZugAusgang(ausgang)){
+                if (ersterAusgang) {
+                    ergebnis += " " + ausgang;
+                    ersterAusgang = false;
+                } 
+                else {
+                    ergebnis += ", " + ausgang;
+                }
+            }
+        }
+        return ergebnis;
+    }
+    
+    /**
+     * Liefere eine Zeichenkette, die die Ausgänge dieser Region
+     * die mit dem Auto errecihbar sind
+     * @return eine Beschreibung der Ausgänge dieses Raumes.
+     */
+    public String gibRegionAusgaengeAutoAlsString()
+    {
+        String ergebnis = "";
+        Set<String> keys = ausgaenge.keySet();
+        boolean ersterAusgang = true;
+        for(String ausgang : keys){ 
+            if(istAutoAusgang(ausgang)){
+                if (ersterAusgang) {
+                    ergebnis += " " + ausgang;
+                    ersterAusgang = false;
+                } 
+                else {
+                    ergebnis += ", " + ausgang;
+                }
             }
         }
         return ergebnis;
     }
 
+    /**
+     * Prüft, ob die angegebene Zielregion
+     * über einen Bahnhof verfügt und somit per Zug erreichbar ist.
+     *
+     * @param zielRegionName Der Name des Ausgangs zur Zielregion.
+     * @return true, wenn die Zielregion über diesen Ausgang per Zug erreichbar ist.
+     */
+    public boolean istZugAusgang(String zielRegionName) 
+    {
+        Region zielRegion = ausgaenge.get(zielRegionName); // verbundene Region
+        if (zielRegion != null) {
+            Raum ankunftsBahnhof = zielRegion.gibRaum("Bahnhof"); // Sucht Raum "Bahnhof" in der Region
+            return ankunftsBahnhof != null && ankunftsBahnhof.gibKategorie() == Raumkategorie.BAHNHOF;
+        }
+        return false;
+    }
+    
+    /**
+     * Prüft, ob die angegebene Zielregion
+     * über eine Autobahn verfügt und somit per Auto erreichbar ist.
+     *
+     * @param zielRegionName Der Name des Ausgangs zur Zielregion.
+     * @return true, wenn die Zielregion über diesen Ausgang per Auto erreichbar ist.
+     */
+    public boolean istAutoAusgang(String zielRegionName) {
+        Region zielRegion = ausgaenge.get(zielRegionName); // verbundene Region
+        if (zielRegion != null) {
+            Raum ankunftsAutobahn = zielRegion.gibRaum("Autobahn"); // Sucht Raum "Autobahn" in der Region
+            return ankunftsAutobahn != null && ankunftsAutobahn.gibKategorie() == Raumkategorie.AUTOBAHN;
+        }
+        return false;
+    }
+    
      /**
      * Liefere die Region, die wir erreichen, wenn wir aus dieser Region
      * in die angegebene Richtung gehen. Liefere 'null', wenn in

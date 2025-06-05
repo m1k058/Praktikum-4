@@ -88,22 +88,25 @@ class Spiel
             System.out.println("Fehler: Aktueller Raum oder Region nicht definiert.");
             return;
         }
-        System.out.println("Du befindest dich " + aktuellerRaum.gibBeschreibung() + //
-                           " in der Region '" + aktuelleRegion.gibBeschreibung() + "'."); //
-        System.out.println(aktuellerRaum.gibRaumAusgaengeAlsString()); //
+        System.out.println("Du befindest dich " + aktuellerRaum.gibBeschreibung() + 
+                           " in der Region '" + aktuelleRegion.gibBeschreibung() + "'."); 
+        System.out.println(aktuellerRaum.gibRaumAusgaengeAlsString());
 
         // Zeige Regionsausgänge nur, wenn der Raum ein TravelRaum ist
         if (aktuellerRaum instanceof TravelRaum) {
-            // Prüfen ob es sich um einen Bahnhof handelt
-             if (aktuellerRaum.gibKategorie() == Raumkategorie.BAHNHOF) { //
-                System.out.println("Von dieser Region '" + aktuelleRegion.gibBeschreibung() + //
-                                   "' kannst du reisen nach:" + aktuelleRegion.gibRegionAusgaengeAlsString()); //
+            if (aktuellerRaum.gibKategorie() == Raumkategorie.BAHNHOF) { //
+                System.out.println("Von dieser Region '" + aktuelleRegion.gibBeschreibung() +
+                "' kannst du reisen nach:" + aktuelleRegion.gibRegionAusgaengeZugAlsString());
+            }
+            else{
+                System.out.println("Von dieser Region '" + aktuelleRegion.gibBeschreibung() +
+                "' kannst du reisen nach:" + aktuelleRegion.gibRegionAusgaengeAutoAlsString());
             }
         }
         // Wenn aktuellerRaum ein BauRaum ist, zeige gebaute Anlagen
         if (aktuellerRaum instanceof BauRaum) {
             BauRaum bauRaum = (BauRaum) aktuellerRaum;
-            System.out.println(bauRaum.gibAnlagenString()); //
+            System.out.println(bauRaum.gibAnlagenString());
         }
     }
 
@@ -187,46 +190,55 @@ class Spiel
      * Kommt mit "Auto" im Raum "Autobahn" der Zielregion an.
      */
     private void wechsleInAndereRegion(Befehl befehl) {
+        // Prüft ob der aktuelle Raum ein TravelRam ist
         if (!(aktuellerRaum instanceof TravelRaum)) {
             System.out.println("Von hier ("+ aktuellerRaum.gibBeschreibung() +") aus kannst du nicht reisen.");
             return;
         }
         Raum alterRaum =  aktuellerRaum;
-
+        
+        // Gibt die entsprechenden ausgängeg der Region für Bahnhof oder Autobahn aus falls kein Ziel vorhanden war
         if (!befehl.hatZweitesWort()) { //
             System.out.println("Wohin möchtest du fahren?");
-            System.out.println("Mögliche Regionen:" + aktuelleRegion.gibRegionAusgaengeAlsString()); //
-            return;
+            if(alterRaum.gibKategorie() == Raumkategorie.BAHNHOF){
+                System.out.println("Mögliche Regionen:" + aktuelleRegion.gibRegionAusgaengeZugAlsString());
+            }
+            else{
+                System.out.println("Mögliche Regionen:" + aktuelleRegion.gibRegionAusgaengeAutoAlsString());
+            }
         }
         Region naechsteRegion = spielumgebung.gibRegion(befehl.gibZweitesWort());
-
-        if (naechsteRegion == null) {
-            System.out.println("Dorthin gibt es aktuell keine Verbindung von dieser Region.");
-        } 
-        else {
-            Region alteRegion = aktuelleRegion;
-            aktuelleRegion = naechsteRegion; // Wechsel zur neuen Region
-
+        
+        if(naechsteRegion != null){
             Raum ankunftsRaum = null;
-            String zielRaumName = null;
-
-            if (alterRaum.gibKategorie() == Raumkategorie.BAHNHOF) {
-                ankunftsRaum = aktuelleRegion.gibRaum("Bahnhof");
-            } else if (alterRaum.gibKategorie() == Raumkategorie.AUTOBAHN) {
-                ankunftsRaum = aktuelleRegion.gibRaum("Autobahn");
+        
+            // Prüfen ob die Zielregion ein Bahnhof/eine Autobahn hat
+            if (alterRaum.gibKategorie() == Raumkategorie.BAHNHOF && aktuelleRegion.istZugAusgang(naechsteRegion.gibBeschreibung())) {
+                ankunftsRaum = naechsteRegion.gibRaum("Bahnhof");
+            } 
+            else if (alterRaum.gibKategorie() == Raumkategorie.AUTOBAHN && aktuelleRegion.istAutoAusgang(naechsteRegion.gibBeschreibung())) {
+                ankunftsRaum = naechsteRegion.gibRaum("Autobahn");
             }
 
+            Region alteRegion = aktuelleRegion;
+            aktuelleRegion = naechsteRegion; // Wechsel zur neuen Region
+        
             if (ankunftsRaum != null) {
                 aktuellerRaum = ankunftsRaum;
                 System.out.println("Du reist von " + alteRegion.gibBeschreibung() + " nach " + aktuelleRegion.gibBeschreibung() + ".");
                 spieler.aendereGeld(spieler.gibEinkommen());
                 spieler.ausgeben();
                 raumInfoAusgeben();
-            } else {
+            }
+            else {
                 System.out.println("Reise fehlgeschlagen. Du bleibst in " + alteRegion.gibBeschreibung() + ".");
                 aktuelleRegion = alteRegion; // Zurück zur alten Region, da Ankunftsort ungültig
             }
         }
+        else{
+            System.out.println("Diese Region ist ungueltig!");
+        }
+                
     }
 
     private void baueAnlage(Befehl befehl) { //

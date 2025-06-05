@@ -3,7 +3,7 @@
     {
       "name": "Voltavia",
       "ausgaenge": {
-        "Wattetal": "Wattetal",
+        "Wattental": "Wattental",
         "Windhain": "Windhain"
       },
       "raeume": [
@@ -436,7 +436,8 @@
       "ausgaenge": {
         "Solaria-Ost": "Solaria-Ost",
         "Windhain": "Windhain",
-        "Westseekueste": "Westseekueste"
+        "Westseekueste": "Westseekueste",
+        "Hauptstadt":"Hauptstadt"
       },
       "raeume": [
         {
@@ -554,7 +555,8 @@
       "ausgaenge": {
         "Solaria-West": "Solaria-West",
         "Kraftia": "Kraftia",
-        "Ostseekueste": "Ostseekueste"
+        "Suedseekueste": "Suedseekueste",
+        "Windhavn":"Windhavn"
       },
       "raeume": [
         {
@@ -661,7 +663,9 @@
     },
     {
       "name": "Hauptstadt",
-      "ausgaenge": {},
+      "ausgaenge": {
+        "Solaria-West":"Solaria-West"
+      },
       "raeume": [
         {
           "name": "Marktplatz1",
@@ -756,7 +760,10 @@
     },
     {
       "name": "Windhavn",
-      "ausgaenge": {},
+      "ausgaenge": {
+        "Solaria-Ost":"Solaria-Ost",
+        "Suedseekueste":"Suedseekueste"
+      },
       "raeume": [
         {
           "name": "Marktplatz1",
@@ -771,7 +778,7 @@
           "name": "Marktplatz2",
           "kategorie": "MARKTPLATZ",
           "ausgaenge": {
-            "norden": "Autobahn1",
+            "norden": "Autobahn",
             "osten": "Bauamt",
             "sueden": "Marktplatz4",
             "westen": "Marktplatz1"
@@ -790,24 +797,16 @@
           "kategorie": "MARKTPLATZ",
           "ausgaenge": {
             "norden": "Marktplatz2",
-            "sueden": "Autobahn2",
             "westen": "Marktplatz3"
           }
         },
         {
-          "name": "Autobahn1",
+          "name": "Autobahn",
           "kategorie": "AUTOBAHN",
           "ausgaenge": {
             "norden": "Feld4",
             "sueden": "Marktplatz2",
             "westen": "Feld1"
-          }
-        },
-        {
-          "name": "Autobahn2",
-          "kategorie": "AUTOBAHN",
-          "ausgaenge": {
-            "norden": "Marktplatz4"
           }
         },
         {
@@ -822,7 +821,7 @@
           "kategorie": "FELD",
           "ausgaenge": {
             "norden": "Feld3",
-            "osten": "Autobahn1",
+            "osten": "Autobahn",
             "sueden": "Marktplatz1"
           }
         },
@@ -846,7 +845,7 @@
           "name": "Feld4",
           "kategorie": "FELD",
           "ausgaenge": {
-            "sueden": "Autobahn1",
+            "sueden": "Autobahn",
             "westen": "Feld3"
           }
         }
@@ -855,7 +854,7 @@
     {
       "name": "Westseekueste",
       "ausgaenge": {
-        "Suedsekueste": "Suedsekueste",
+        "Suedseekueste": "Suedseekueste",
         "Solaria-West": "Solaria-West"
       },
       "raeume": [
@@ -987,7 +986,8 @@
       "name": "Suedseekueste",
       "ausgaenge": {
         "Westseekueste": "Westseekueste",
-        "Solaria-Ost": "Solaria-Ost"
+        "Solaria-Ost": "Solaria-Ost",
+        "Windhavn":"Windhavn"
       },
       "raeume": [
         {
