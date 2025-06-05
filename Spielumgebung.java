@@ -77,7 +77,7 @@ public class Spielumgebung
                 if(raum.gibKategorie() == Raumkategorie.BAUAMT){
                     raum.gibInventar().addItem("Baugenehmigung");
                 }
-                if(raum.gibKategorie() == Raumkategorie.BUNDESAMT){
+                if(raum.gibKategorie() == Raumkategorie.BUNDESTAG){
                     raum.gibInventar().addItemAnzahl("Baugenehmigung", 5);
                 }
                 

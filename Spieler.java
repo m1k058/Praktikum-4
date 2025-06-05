@@ -27,6 +27,15 @@ public class Spieler
     }
     
     /**
+     * Getter für das Spieler Inventar
+     *
+     * @return das Inventar
+     */
+    public Inventar gibSpielerInventar() { 
+        return spielerInventar;
+    }
+    
+    /**
      * ï¿½ndere Geld des Spielers.
      */
     public void aendereGeld(int aenderung)

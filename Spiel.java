@@ -33,6 +33,7 @@ class Spiel
 
     private int einkommenMultiplikator;
     private int punkte;
+    private int zugfahrtenCount;
 
     /**
      * Erzeuge ein Spiel und initialisiere die interne Raumkarte.
@@ -45,15 +46,17 @@ class Spiel
             spielumgebung = new Spielumgebung("map_v2.json");
         } catch (Exception e) {
             System.err.println("Kritischer Fehler beim Laden der Spielumgebung: " + e.getMessage());
-            System.err.println("Das Spiel kann nicht gestartet werden. Bitte überprüfe die Datei 'map_v1.json'.");
+            System.err.println("Das Spiel kann nicht gestartet werden. Bitte überprüfe die Datei 'map_v2.json'.");
         }
-        aktuelleRegion = spielumgebung.gibRegion("Voltavia");
-        aktuellerRaum = aktuelleRegion.gibRaum("Bahnhof");
-
+        aktuelleRegion = spielumgebung.gibRegion("Westseekueste");
+        aktuellerRaum = aktuelleRegion.gibRaum("Offshore1");
+        
+        
         einkommenMultiplikator = 1;
         gesamtSolaranlagen = 0;
         gesamtWindanlagen = 0;
         punkte = 0;
+        zugfahrtenCount = 0;
     }
 
     /**
@@ -71,10 +74,33 @@ class Spiel
         while (! beendet) {
             Befehl befehl = parser.liefereBefehl();
             beendet = verarbeiteBefehl(befehl);
+            beendet = testGewinn();
         }
         System.out.println("Danke fuer dieses Spiel. Auf Wiedersehen.");
     }
 
+    /**
+     * Prüfe Gewinn
+     *
+     * @return    true wenn die Gewinnbedingung oder 
+     * Verlierbedingung erreicht wurde 
+     */
+    private boolean testGewinn()
+    {
+        if(punkte>=100){
+            System.out.println("\n\nSIE HABEN " + punkte + " PUNKTE ERREICHT!!!\nSie haben Neuland gerettet und das Spiel gewonnen.");
+            return true;
+        }
+        else if (zugfahrtenCount >= 50){
+            System.out.println("\n\nSie haben leider zu lange gebraucht. Die Zuege fahren nicht mehr. Sie verlieren.");
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    
     /**
      * Einen Begruessungstext fuer den Spieler ausgeben.
      */
@@ -82,7 +108,7 @@ class Spiel
     {
         System.out.println();
         System.out.println("Willkommen im Neuland Alpha!");
-        System.out.println("Das Neuland ist ein weit unterentwickeltes Land und benÃ¶tigt dringend deine Hilfe!");
+        System.out.println("Das Neuland ist ein weit unterentwickeltes Land und benoetigt dringend deine Hilfe!");
         System.out.println("Nur du kannst das Land noch retten!!!");
         System.out.println("Tippen sie '" + Befehlswort.HELP + "', wenn Sie Hilfe brauchen.");
         System.out.println();
@@ -94,22 +120,22 @@ class Spiel
      */
     private void raumInfoAusgeben() {
         System.out.println();
-        System.out.print("Geld: " + spieler.gibGeld() + "  |  ");
-        System.out.print("Geld/Fahrt: " + einkommenMultiplikator + "  |  ");
+        System.out.println("------------------------------------------------------------------------------------------");
+        System.out.print("\t\t\tGeld/Fahrt: " + einkommenMultiplikator + "  |  ");
         System.out.println("Punkte: " + punkte);
-        System.out.println();
+        System.out.println("Inventar:");
+        System.out.println(spieler.gibSpielerInventar().gibInventarAlsString());
         System.out.println("Du befindest dich " + aktuellerRaum.gibBeschreibung() + 
-            " in der Region '" + aktuelleRegion.gibBeschreibung() + "'."); 
-        System.out.println(aktuellerRaum.gibRaumInfoString());
+            " in der Region '" + aktuelleRegion.gibBeschreibung() + "'.");
 
         // Zeige Regionsausgänge nur, wenn der Raum ein TravelRaum ist
         if (aktuellerRaum instanceof TravelRaum) {
             if (aktuellerRaum.gibKategorie() == Raumkategorie.BAHNHOF) { //
-                System.out.println("Von dieser Region '" + aktuelleRegion.gibBeschreibung() +
+                System.out.println("\nVon dieser Region '" + aktuelleRegion.gibBeschreibung() +
                     "' kannst du reisen nach:" + aktuelleRegion.gibRegionAusgaengeZugAlsString());
             }
             else{
-                System.out.println("Von dieser Region '" + aktuelleRegion.gibBeschreibung() +
+                System.out.println("\nVon dieser Region '" + aktuelleRegion.gibBeschreibung() +
                     "' kannst du reisen nach:" + aktuelleRegion.gibRegionAusgaengeAutoAlsString());
             }
         }
@@ -117,7 +143,10 @@ class Spiel
         if (aktuellerRaum instanceof BauRaum) {
             BauRaum bauRaum = (BauRaum) aktuellerRaum;
             System.out.println(bauRaum.gibAnlagenString());
-        }
+        } 
+        // Info über die Raumausgänge
+        System.out.print(aktuellerRaum.gibRaumInfoString());               
+        System.out.println("------------------------------------------------------------------------------------------");
     }
 
     /**
@@ -157,7 +186,7 @@ class Spiel
                 break;
 
             case PICKUP:
-
+                itemAufheben(befehl);
                 break;
         }
         // ansonsten: Befehl nicht erkannt.
@@ -239,6 +268,7 @@ class Spiel
                 aktuellerRaum = ankunftsRaum;
                 System.out.println("Du reist von " + alteRegion.gibBeschreibung() + " nach " + aktuelleRegion.gibBeschreibung() + ".");
                 spieler.aendereGeld(einkommenMultiplikator);
+                zugfahrtenCount +=1;
                 raumInfoAusgeben();
             }
             else {
@@ -270,38 +300,49 @@ class Spiel
         int einkommenPlus = 0;
         boolean erfolgreich = false;
 
-        if (anlagenArt.equals("solar")) {
-            kosten = 10;
-            einkommenPlus = 6;
-            if (spieler.gibGeld() >= kosten) {
-                if (bauRaum.bauSolar()) {
-                    System.out.println("Eine Solaranlage wurde " + bauRaum.gibBeschreibung() + " gebaut.");
-                    erfolgreich = true;
+        if(spieler.gibSpielerInventar().gibAnzahlItems("Baugenehmigung")>=1){
+            if (anlagenArt.equals("solar")) 
+            {
+                kosten = 10;
+                einkommenPlus = 6;
+                if (spieler.gibGeld() >= kosten) {
+                    if (bauRaum.bauSolar()) {
+                        System.out.println("Eine Solaranlage wurde " + bauRaum.gibBeschreibung() + " gebaut.");
+                        erfolgreich = true;
+                    } else {
+                        System.out.println("Solaranlage konnte nicht gebaut werden. " + bauRaum.gibAnlagenString());
+                    }
                 } else {
-                    System.out.println("Solaranlage konnte nicht gebaut werden. " + bauRaum.gibAnlagenString());
+                    System.out.println("Nicht genug Geld für eine Solaranlage. Benötigt: " + kosten + " Münzen.");
+                }
+            } 
+            else if (anlagenArt.equals("wind")) 
+            {
+                kosten = 2;
+                einkommenPlus = 1;
+                if (spieler.gibGeld() >= kosten) {
+                    if (bauRaum.bauWind()) {
+                        System.out.println("Eine Windkraftanlage wurde " + bauRaum.gibBeschreibung() + " gebaut.");
+                        erfolgreich = true;
+                    } else {
+                        System.out.println("Windkraftanlage konnte nicht gebaut werden. " + bauRaum.gibAnlagenString());
+                    }
+                } else {
+                    System.out.println("Nicht genug Geld für eine Windkraftanlage. Benötigt: " + kosten + " Münzen.");
                 }
             } else {
-                System.out.println("Nicht genug Geld für eine Solaranlage. Benötigt: " + kosten + " Münzen.");
+                System.out.println("Es können nur 'solar'- oder 'wind'-Anlagen gebaut werden.");
             }
-        } else if (anlagenArt.equals("wind")) {
-            kosten = 2;
-            einkommenPlus = 1;
-            if (spieler.gibGeld() >= kosten) { //
-                if (bauRaum.bauWind()) { //
-                    System.out.println("Eine Windkraftanlage wurde " + bauRaum.gibBeschreibung() + " gebaut.");
-                    erfolgreich = true;
-                } else {
-                    System.out.println("Windkraftanlage konnte nicht gebaut werden. " + bauRaum.gibAnlagenString());
-                }
-            } else {
-                System.out.println("Nicht genug Geld für eine Windkraftanlage. Benötigt: " + kosten + " Münzen.");
-            }
-        } else {
-            System.out.println("Es können nur 'solar'- oder 'wind'-Anlagen gebaut werden.");
+
+        }
+        else
+        {
+            System.out.print("Keine Baugenemigungen im Inventar! Besorge dir erstmal eine Baugenehmigung.");
         }
 
         if(erfolgreich) {
             spieler.aendereGeld(-kosten);
+            spieler.gibSpielerInventar().removeItem("Baugenehmigung");
             einkommenMultiplikator += einkommenPlus;
             System.out.println("Du erhältst nun " + einkommenPlus + " zusätzliche Münze(n) pro Bahnfahrt.");
             raumInfoAusgeben();
@@ -340,15 +381,32 @@ class Spiel
      * Hebt ein Item auf
      *
      * @param  befehl für das zweite Befehlswort
-     * @return    the sum of x and y
      */
-    public void itemAufheben(Befehl befehl)
+    private void itemAufheben(Befehl befehl)
     {
-        String item = befehl.gibZweitesWort();
-        
+        if (!befehl.hatZweitesWort()) {
+            System.out.println("Was möchtest du aufheben?");
+            return;
+        }
+        String itemName = befehl.gibZweitesWort();
+
+        // Prüfen, ob der aktuelle Raum ein Bauamt/Bundesamt ist und Items hat
+        if (aktuellerRaum.gibInventar() == null || aktuellerRaum.gibInventar().istLeer()) {
+            System.out.println("Hier gibt es nichts zum Aufheben.");
+            return;
+        }
+
+        Inventar raumInventar = aktuellerRaum.gibInventar();
+        Inventar spielerInventar = spieler.gibSpielerInventar();
+
+        if (Inventar.bewegeItem(itemName, raumInventar, spielerInventar)) { //
+            System.out.println(itemName + " wurde zum Inventar hinzugefügt.");
+            raumInfoAusgeben();
+        } else {
+            System.out.println("Konnte " + itemName + " nicht aufheben. Ist es hier vorhanden?");
+        }
     }
 
-    
     /**
      * "quit" wurde eingegeben. Ãœberpruefe den Rest des Befehls,
      * ob das Spiel wirklich beendet werden soll.
