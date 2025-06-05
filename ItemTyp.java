@@ -10,7 +10,7 @@ public enum ItemTyp {
     APFEL("Apfel", "Ein saftiger, roter Apfel."),
     SCHWERT("Schwert", "Eine scharfe, verlässliche Klinge."),
     KARTE("Karte", "Zeigt die nähere Umgebung."),
-    GOLDMUENZE("Goldmünze", "Eine glänzende Goldmünze."),
+    MUENZE("Münze", "Ein Plätchen aus einer Nickel-Messing-Legierung."),
     HEILTRANK("Heiltrank", "Stellt einen Teil der Lebenspunkte wieder her.");
 
     private final String anzeigename;

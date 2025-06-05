@@ -3,22 +3,19 @@
  * Beschreiben Sie hier die Klasse Spieler.
  * 
  * @author (Cedric) 
- * @version (1.0)
+ * @version (2.0)
  */
 public class Spieler
 {
-    private int geld;
-    private int einkommen;
-    private int ansehen;
+    private Inventar spielerInventar;
 
     /**
      * Konstruktor für Objekte der Klasse Spieler
      */
-    public Spieler(int geld, int einkommen, int ansehen)
+    public Spieler(int startGeld)
     {
-        this.geld = geld;
-        this.einkommen = einkommen;
-        this.ansehen = ansehen;
+        spielerInventar = new Inventar();
+        spielerInventar.addItemAnzahl("MUENZE", startGeld);
     }
 
     /**
@@ -26,23 +23,7 @@ public class Spieler
      */
     public int gibGeld()
     {
-        return this.geld;
-    }
-    
-    /**
-     * Gib Einkommen des Spielers zurück.
-     */
-    public int gibEinkommen()
-    {
-        return this.einkommen;
-    }
-    
-    /**
-     * Gib Ansehen des Spielers zurück.
-     */
-    public int gibAnsehen()
-    {
-        return this.ansehen;
+        return spielerInventar.gibAnzahlItems("MUENZE");
     }
     
     /**
@@ -50,26 +31,11 @@ public class Spieler
      */
     public void aendereGeld(int aenderung)
     {
-        geld += aenderung;
-    }
-    
-    /**
-     * Ändere Einkommen des Spielers.
-     */
-    public void aendereEinkommen(int aenderung)
-    {
-        einkommen += aenderung;
-    }
-    
-    /**
-     * Ändere Ansehen des Spielers.
-     */
-    public void aendereAnsehen(int aenderung)
-    {
-        ansehen += aenderung;
-    }
-    
-    public void ausgeben() {
-        System.out.println("Münzen: " + geld + "   Einkommen: " + einkommen + "   Ansehen: " + ansehen);
+        if(aenderung>0){
+            spielerInventar.addItemAnzahl("MUENZE", aenderung);
+        }
+        else if (aenderung<0){
+            spielerInventar.removeItemAnzahl("MUENZE", aenderung);
+        }
     }
 }

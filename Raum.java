@@ -12,23 +12,25 @@ import java.util.HashMap;
  * hat ensprechend bestimmte nutzbare Methoden
  * 
  * @author  Michal Kos und Cedric Wilke
- * @version 23.05.2025
+ * @version 04.06.2025
  */
 
 class Raum 
 {
     private Raumkategorie kategorie;
     private HashMap<String, Raum> ausgaenge;        // die Ausgänge dieses Raums
+    private Inventar raumInventar;                  // Inventar für den Raum
 
     /**
      * Erzeuge einen Raum  einer Kategorie. Ein Raum
-     * hat anfangs keine Ausgänge.
+     * hat anfangs keine Ausgänge und nichts im inventar.
      * @param kategorie des Raumes.
      */
     public Raum(Raumkategorie kategorie) 
     {
         this.kategorie = kategorie;
         ausgaenge = new HashMap<String, Raum>();
+        raumInventar = new Inventar();
     }
 
     /**
@@ -47,7 +49,7 @@ class Raum
      * "Ausgänge: north west".
      * @return eine Beschreibung der Ausgänge dieses Raumes.
      */
-    public String gibRaumAusgaengeAlsString()
+    private String gibRaumAusgaengeAlsString()
     {
         String ergebnis = "Ausgaenge: ";
         Set<String> keys = ausgaenge.keySet();
@@ -61,6 +63,23 @@ class Raum
             }
         }
         return ergebnis;
+    }
+    
+    /**
+     * Gibt zusätzlich zu den Raumausgängen auch die Items im Raum aus
+     * @return Eine Beschreibung der Ausgänge und Items des Raumes.
+     */
+    public String gibRaumInfoString() {
+        String info = gibRaumAusgaengeAlsString();
+        info += "\n";
+        if (raumInventar != null && !raumInventar.istLeer()) {         
+            String inventarInfo = raumInventar.gibInventarAlsString();
+            
+            if (!raumInventar.istLeer()) {
+                info += "Hier siehst du: \n" + inventarInfo;
+            }
+        }
+        return info;
     }
     
     /**
@@ -92,6 +111,16 @@ class Raum
     public Raumkategorie gibKategorie()
     {
         return kategorie;
+    }
+
+    /**
+     * Gibt das Inventar dieses Raumes zurück.
+     *
+     * @return Das Inventar des Raumes.
+     */
+    public Inventar gibInventar() // Getter für das Inventar
+    {
+        return raumInventar;
     }
 
 }

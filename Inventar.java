@@ -27,15 +27,35 @@ public class Inventar {
      *
      * @param typ Der hinzuzufügende ItemTyp. Wenn null, geschieht nichts.
      */
-    public void addItem(ItemTyp typ) {
+    public void addItem(String typ) {
+        ItemTyp item = findeItemTyp(typ);
         if (typ == null) {
             return;
         }
         if (this.itemAnzahl.containsKey(typ)) {
             int aktuelleAnzahl = this.itemAnzahl.get(typ);
-            this.itemAnzahl.put(typ, aktuelleAnzahl + 1);
+            this.itemAnzahl.put(item, aktuelleAnzahl + 1);
         } else {
-            this.itemAnzahl.put(typ, 1);
+            this.itemAnzahl.put(item, 1);
+        }
+    }
+    
+    /**
+     * Fügt einen ItemTyp zum Inventar hinzu oder erhöht dessen Anzahl um mehr als 1
+     *
+     * @param typ Der hinzuzufügende ItemTyp. Wenn null, geschieht nichts
+     * anzahl Die Anzahl an Items die hinzugefügt werden soll
+     */
+    public void addItemAnzahl(String typ, int anzahl) {
+        ItemTyp item = findeItemTyp(typ);
+        if (typ == null) {
+            return;
+        }
+        if (this.itemAnzahl.containsKey(typ)) {
+            int aktuelleAnzahl = this.itemAnzahl.get(typ);
+            this.itemAnzahl.put(item, aktuelleAnzahl + anzahl);
+        } else {
+            this.itemAnzahl.put(item, anzahl);
         }
     }
 
@@ -48,14 +68,39 @@ public class Inventar {
      * @return  true wenn ein Exemplar des Typs erfolgreich entfernt wurde
      *  false wenn der Typ nicht im Inventar vorhanden war
      */
-    public boolean removeItem(ItemTyp typ) {
+    public boolean removeItem(String typ) {
+        ItemTyp item = findeItemTyp(typ);
         if (typ == null || !this.itemAnzahl.containsKey(typ)) {
             return false;
         }
 
         int aktuelleAnzahl = this.itemAnzahl.get(typ);
         if (aktuelleAnzahl > 1) {
-            this.itemAnzahl.put(typ, aktuelleAnzahl - 1);
+            this.itemAnzahl.put(item, aktuelleAnzahl - 1);
+        } else {
+            this.itemAnzahl.remove(typ);
+        }
+        return true;
+    }
+    
+    /**
+     * Entfernt ein Exemplar eines ItemTyps aus dem Inventar
+     * Wenn der angegebene ItemTyp mehrfach vorhanden war, wird seine Anzahl dekrementiert
+     * Ist es das letzte Exemplar dieses Typs, wird der ItemTyp komplett aus dem Inventar entfernt
+     *
+     * @param typ Der ItemTyp des zu entfernenden Items
+     * @return  true wenn ein Exemplar des Typs erfolgreich entfernt wurde
+     *  false wenn der Typ nicht im Inventar vorhanden war
+     */
+    public boolean removeItemAnzahl(String typ, int anzahl) {
+        ItemTyp item = findeItemTyp(typ);
+        if (typ == null || !this.itemAnzahl.containsKey(typ)) {
+            return false;
+        }
+
+        int aktuelleAnzahl = this.itemAnzahl.get(typ);
+        if (aktuelleAnzahl > anzahl) {
+            this.itemAnzahl.put(item, aktuelleAnzahl - anzahl);
         } else {
             this.itemAnzahl.remove(typ);
         }
@@ -68,7 +113,8 @@ public class Inventar {
      * @param typ Der ItemTyp, dessen Anzahl ermittelt werden soll
      * @return Die Anzahl der Items dieses Typs. Gibt 0 zurück, wenn nicht im Inventar
      */
-     public int getAnzahlItems(ItemTyp typ) {
+     public int gibAnzahlItems(String typ) {
+         ItemTyp item = findeItemTyp(typ);
          if (typ == null) {
              return 0;
          }
@@ -79,18 +125,25 @@ public class Inventar {
               return 0;
          }
     }
-
+    
+    /**
+     * Prüft ob das Inventar Leer ist
+     * @return true wenn Leer, sonst false
+     */
+    public boolean istLeer(){
+        return itemAnzahl.isEmpty();
+    }
 
     /**
      * Erzeugt eine Zeichenkette des Inventarinhalts (z.B. "- Apfel (2)")
      * @return Eine Zeichenkette, die den Inhalt des Inventars darstellt
      */
-    public String getInventarAlsString() {
+    public String gibInventarAlsString() {
         if (itemAnzahl.isEmpty()) {
-            return "Dein Inventar ist leer.";
+            return null;
         }
 
-        String inventar = "Du hast im Inventar:\n";
+        String inventar = "";
         for (Map.Entry<ItemTyp, Integer> entry : itemAnzahl.entrySet()) {
             ItemTyp typ = entry.getKey();
             int anzahl = entry.getValue();
@@ -113,7 +166,7 @@ public class Inventar {
      * @param zuInventar Das Inventar, zu dem das Item hinzugefügt werden soll
      * @return true, wenn das Item erfolgreich verschoben wurde, sonst false
      */
-    public static boolean bewegeItem(ItemTyp typ, Inventar vonInventar, Inventar zuInventar) {
+    public static boolean bewegeItem(String typ, Inventar vonInventar, Inventar zuInventar) {
         if (typ == null || vonInventar == null || zuInventar == null) {
             return false;
         }

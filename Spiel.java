@@ -25,13 +25,16 @@ class Spiel
     private Spielumgebung spielumgebung;
     private Region aktuelleRegion;
     private Raum aktuellerRaum;
+    
+    private int einkommenMultiplikator;
+    private int punkte;
 
     /**
      * Erzeuge ein Spiel und initialisiere die interne Raumkarte.
      */
     public Spiel() 
     {
-        spieler = new Spieler(5, 0, 100);
+        spieler = new Spieler(5);
         parser = new Parser();
         try {
             spielumgebung = new Spielumgebung("map_v2.json");
@@ -43,6 +46,8 @@ class Spiel
         aktuelleRegion = spielumgebung.gibRegion("Voltavia");
         aktuellerRaum = aktuelleRegion.gibRaum("Bahnhof");
         
+        einkommenMultiplikator = 1;
+        punkte = 0;
     }
 
     /**
@@ -74,7 +79,6 @@ class Spiel
         System.out.println("Das Neuland ist ein weit unterentwickeltes Land und benÃ¶tigt dringend deine Hilfe!");
         System.out.println("Nur du kannst das Land noch retten!!!");
         System.out.println("Tippen sie '" + Befehlswort.HELP + "', wenn Sie Hilfe brauchen.");
-        spieler.ausgeben();
         System.out.println();
         raumInfoAusgeben();
     }
@@ -84,13 +88,13 @@ class Spiel
      */
     private void raumInfoAusgeben() {
         System.out.println();
-        if (aktuellerRaum == null || aktuelleRegion == null) {
-            System.out.println("Fehler: Aktueller Raum oder Region nicht definiert.");
-            return;
-        }
+        System.out.print("Geld: " + spieler.gibGeld() + "  |  ");
+        System.out.print("Geld/Fahrt: " + einkommenMultiplikator + "  |  ");
+        System.out.println("Punkte: " + punkte);
+        System.out.println();
         System.out.println("Du befindest dich " + aktuellerRaum.gibBeschreibung() + 
                            " in der Region '" + aktuelleRegion.gibBeschreibung() + "'."); 
-        System.out.println(aktuellerRaum.gibRaumAusgaengeAlsString());
+        System.out.println(aktuellerRaum.gibRaumInfoString());
 
         // Zeige Regionsausgänge nur, wenn der Raum ein TravelRaum ist
         if (aktuellerRaum instanceof TravelRaum) {
@@ -178,8 +182,6 @@ class Spiel
             System.out.println("Dort geht es nicht lang!");
         } else {
             aktuellerRaum = naechsterRaum;
-            // Spielerstats (Geld, Ansehen) ändern sich nicht beim Raumwechsel innerhalb einer Region
-            spieler.ausgeben(); //
             raumInfoAusgeben();
         }
     }
@@ -226,8 +228,7 @@ class Spiel
             if (ankunftsRaum != null) {
                 aktuellerRaum = ankunftsRaum;
                 System.out.println("Du reist von " + alteRegion.gibBeschreibung() + " nach " + aktuelleRegion.gibBeschreibung() + ".");
-                spieler.aendereGeld(spieler.gibEinkommen());
-                spieler.ausgeben();
+                spieler.aendereGeld(einkommenMultiplikator);
                 raumInfoAusgeben();
             }
             else {
@@ -241,65 +242,58 @@ class Spiel
                 
     }
 
-    private void baueAnlage(Befehl befehl) { //
+    private void baueAnlage(Befehl befehl) { 
         if (!(aktuellerRaum instanceof BauRaum)) {
-            System.out.println("Hier (" + aktuellerRaum.gibBeschreibung() + ") können keine Anlagen gebaut werden."); //
+            System.out.println("Hier (" + aktuellerRaum.gibBeschreibung() + ") können keine Anlagen gebaut werden.");
             return;
         }
         BauRaum bauRaum = (BauRaum) aktuellerRaum;
 
-        if (!befehl.hatZweitesWort()) { //
-            System.out.println("Welche Art von Anlage soll gebaut werden? Verfügbar: 'solar' oder 'wind'."); //
+        if (!befehl.hatZweitesWort()) { 
+            System.out.println("Welche Art von Anlage soll gebaut werden? Verfügbar: 'solar' oder 'wind'."); 
             System.out.println(bauRaum.gibAnlagenString()); // Zeige aktuelle Belegung
             return;
         }
-        String anlagenArt = befehl.gibZweitesWort(); //
-
-        // TODO: Kosten, Einkommens- und Ansehensänderungen hier definieren oder aus Raumkategorie/Konstanten beziehen.
-        // Die Werte aus dem alten Spiel (-1 Muenze, +1 Einkommen etc.) sind hier als Platzhalter.
+        String anlagenArt = befehl.gibZweitesWort(); 
+        
         int kosten = 0;
         int einkommenPlus = 0;
-        int ansehenPlus = 0;
         boolean erfolgreich = false;
 
-        if (anlagenArt.equals("solar")) { //
-            kosten = 2; // Beispiel Kosten
-            einkommenPlus = 2; // Beispiel Einkommen
-            ansehenPlus = 2; // Beispiel Ansehen
-            if (spieler.gibGeld() >= kosten) { //
-                if (bauRaum.bauSolar()) { //
-                    System.out.println("Eine Solaranlage wurde " + bauRaum.gibBeschreibung() + " gebaut."); //
+        if (anlagenArt.equals("solar")) {
+            kosten = 10;
+            einkommenPlus = 6;
+            if (spieler.gibGeld() >= kosten) {
+                if (bauRaum.bauSolar()) {
+                    System.out.println("Eine Solaranlage wurde " + bauRaum.gibBeschreibung() + " gebaut.");
                     erfolgreich = true;
                 } else {
-                    System.out.println("Solaranlage konnte nicht gebaut werden. " + bauRaum.gibAnlagenString()); //
+                    System.out.println("Solaranlage konnte nicht gebaut werden. " + bauRaum.gibAnlagenString());
                 }
             } else {
                 System.out.println("Nicht genug Geld für eine Solaranlage. Benötigt: " + kosten + " Münzen.");
             }
-        } else if (anlagenArt.equals("wind")) { //
-            kosten = 1; // Beispiel Kosten
-            einkommenPlus = 1; // Beispiel Einkommen
-            ansehenPlus = 1; // Beispiel Ansehen
+        } else if (anlagenArt.equals("wind")) {
+            kosten = 2;
+            einkommenPlus = 1;
              if (spieler.gibGeld() >= kosten) { //
                 if (bauRaum.bauWind()) { //
-                    System.out.println("Eine Windkraftanlage wurde " + bauRaum.gibBeschreibung() + " gebaut."); //
+                    System.out.println("Eine Windkraftanlage wurde " + bauRaum.gibBeschreibung() + " gebaut.");
                     erfolgreich = true;
                 } else {
-                    System.out.println("Windkraftanlage konnte nicht gebaut werden. " + bauRaum.gibAnlagenString()); //
+                    System.out.println("Windkraftanlage konnte nicht gebaut werden. " + bauRaum.gibAnlagenString());
                 }
             } else {
                 System.out.println("Nicht genug Geld für eine Windkraftanlage. Benötigt: " + kosten + " Münzen.");
             }
         } else {
-            System.out.println("Es können nur 'solar'- oder 'wind'-Anlagen gebaut werden."); //
+            System.out.println("Es können nur 'solar'- oder 'wind'-Anlagen gebaut werden.");
         }
 
         if(erfolgreich) {
-            spieler.aendereGeld(-kosten); //
-            spieler.aendereEinkommen(einkommenPlus); //
-            spieler.aendereAnsehen(ansehenPlus); //
-            System.out.println("Du erhältst nun " + einkommenPlus + " zusätzliche Münze(n) Einkommen und dein Ansehen steigt um " + ansehenPlus + ".");
-            spieler.ausgeben(); //
+            spieler.aendereGeld(-kosten);
+            einkommenMultiplikator += einkommenPlus;
+            System.out.println("Du erhältst nun " + einkommenPlus + " zusätzliche Münze(n) pro Bahnfahrt.");
             raumInfoAusgeben();
         }
     }
