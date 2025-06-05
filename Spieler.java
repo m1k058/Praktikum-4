@@ -10,7 +10,7 @@ public class Spieler
     private Inventar spielerInventar;
 
     /**
-     * Konstruktor für Objekte der Klasse Spieler
+     * Konstruktor fï¿½r Objekte der Klasse Spieler
      */
     public Spieler(int startGeld)
     {
@@ -19,7 +19,7 @@ public class Spieler
     }
 
     /**
-     * Gib Geld des Spielers zurück.
+     * Gib Geld des Spielers zurï¿½ck.
      */
     public int gibGeld()
     {
@@ -27,7 +27,15 @@ public class Spieler
     }
     
     /**
-     * Ändere Geld des Spielers.
+     * Gib Anzahl der gebauten Anlagen des Spielers zurï¿½ck.
+     */
+    public int gibGebauteAnlagen()
+    {
+        return this.gebauteAnlagen;
+    }
+    
+    /**
+     * ï¿½ndere Geld des Spielers.
      */
     public void aendereGeld(int aenderung)
     {
